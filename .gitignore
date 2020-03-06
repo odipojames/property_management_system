@@ -103,5 +103,3 @@ virtual/
 
 # mypy
 .mypy_cache/
-
-credentials.py

@@ -1,0 +1,3 @@
+USERNAME = 'abdiladifbashir'
+PASSWORD = 'Bashir_@12'
+APIKEY=  '330c328c07107b61ba6214dab50f5cf93ccbe2504ce03b90417b6ad1c41731a5'
