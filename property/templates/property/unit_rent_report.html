@@ -1,0 +1,247 @@
+{% extends 'property/base_report.html' %}
+{% load humanize %}
+{% block title %}Report{% endblock %}
+{% block body %}
+{% load bootstrap4 %}
+<!-- single tenant rent display -->
+<div class="tab-pane" id="tab-display-rent">
+<!-- page start-->
+<section class="panel">
+  <header class="panel-heading">
+  {{unit.unit_tenant.name}}  unit  {{unit.unit_number}} of  {{unit.property}}
+  </header>
+  <table class="table table-hover p-table  responsive" width="100%" id="unit-rent">
+    <thead>
+      <tr>
+        <th>rent</th>
+        <th>Service fee</th>
+        <th>total amount paid</th>
+        <th>Balance</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>rent</th>
+        <th>Service fee</th>
+        <th>total amount paid</th>
+        <th>Balance</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Actions</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for rent in rents %}
+      <tr>
+       <td class="p-name">
+          {{rent.rent | stringformat:'d' | intcomma}}
+        </td>
+        <td class="p-name">
+          {{rent.service_charge | stringformat:'d' | intcomma}}
+        </td>
+        <td class="p-name">
+           {{rent.total_amount_paid | stringformat:'d' | intcomma}}
+         </td>
+        <td class="p-name">
+          {{rent.Balance | stringformat:'d' | intcomma}}
+        </td>
+        <td class="p-name">
+          <a href="#">{{rent.get_month_display}}</a>
+        </td>
+        <td class="p-name">
+          <a href="#">{{rent.year}}</a>
+        </td>
+        <td>
+          <a href="{% url 'property:rent_detail' rent.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+          </a>
+          <a href="{% url 'property:edit_rent' rent.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+          <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfir"><i class="fa fa-trash-o"></i> Delete </a>
+
+          <!--Modal: modalConfirmDelete-->
+          <div class="modal fade" id="modalConfir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+              <!--Content-->
+              <div class="modal-content text-center">
+                <!--Header-->
+                <div class="modal-header d-flex justify-content-center">
+                  <p class="heading">Are you sure?</p>
+                </div>
+
+
+                <!--Footer-->
+                <div class="modal-footer flex-center" style="text-align:center">
+                  <a href="{% url 'property:rent' rent.id %}" class="btn  btn-success">Yes</a>
+                  <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                </div>
+              </div>
+              <!--/.Content-->
+            </div>
+          </div>
+          <!--Modal: modalConfirmDelete-->
+        </td>
+        {% empty %}
+        <td class="p-name">
+          <a>You haven't added any rents yet</a>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+<!-- page end-->
+
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#unit-rent').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 0,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 0, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 0).footer() ).html(
+                'Ksh.'+pageTotal +' ( Ksh.'+ total +' total)'
+            );
+
+            // Total over all pages
+            total2 = api
+                .column( 1,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal2 = api
+                .column( 1, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 1).footer() ).html(
+                'Ksh.'+pageTotal2 +' ( Ksh.'+ total2 +' total)'
+            );
+
+            // Total over all pages
+            total3 = api
+                .column( 2,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal3 = api
+                .column( 2, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 2 ).footer() ).html(
+                'Ksh.'+pageTotal3 +' ( Ksh.'+ total3 +' total)'
+            );
+
+
+            // Total over all pages
+            total4 = api
+                .column( 3,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal4 = api
+                .column( 3, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 3 ).footer() ).html(
+                'Ksh.'+pageTotal4 +' ( Ksh.'+ total4 +' total)'
+            );
+
+
+
+
+
+        },
+
+
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+
+    } );
+} );
+</script>
+
+
+{% endblock %}

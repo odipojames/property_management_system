@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load bootstrap4 %}
+{% load humanize %}
+
+
+
+<!-- Mirrored from thevectorlab.net/flatlab/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 14 Aug 2015 03:42:50 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <link rel="shortcut icon" href="img/favicon.html">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"> </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../jQuery.print.js"></script>
+
+    <title>{% block title %}FlatLab - Flat & Responsive Bootstrap Admin Template{% endblock %}</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'property/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'property/css/bootstrap-reset.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'property/assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet"/>
+    <link href="{% static 'property/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css' %}" rel="stylesheet"
+          type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{% static 'property/css/owl.carousel.css' %}" type="text/css">
+
+    <!--right slidebar-->
+    <link href="{% static 'property/css/slidebars.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+
+    <link href="{% static 'property/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'property/css/style-responsive.css' %}" rel="stylesheet"/>
+
+
+
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="HandheldFriendly" content="true">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Cattle Farm Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<link rel="shortcut icon" href="static/property/img/ibgaro.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="HandheldFriendly" content="true">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+</head>
+
+<body>
+
+<section id="container">
+    <!--header start-->
+    <header class="header white-bg">
+        <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div>
+        <!--logo start-->
+        <a href="{% url 'property:home' %}" class="logo">IBGARO<span>Realtors</span></a>
+        <!--logo end-->
+
+        <div class="top-nav ">
+            <!--search & user info start-->
+            <ul class="nav pull-right top-menu">
+
+
+                <!-- user login dropdown start-->
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <img alt="" src="img/avatar1_small.jpg">
+                        <span class="username"> Welcome {{ user.username }}</span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu extended logout">
+                        <div class="log-arrow-up"></div>
+
+
+                        <li><a href="{% url 'property:signup' %}"><i class="fa fa-key"></i>Register New Admin</a></li>
+                        <li><a href="{% url 'account_logout' %}"><i class="fa fa-key"></i> Log Out</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            <!--search & user info end-->
+        </div>
+    </header>
+    <!--header end-->
+    <!--sidebar start-->
+    <aside>
+        <div id="sidebar" class="nav-collapse">
+            <!-- sidebar menu start-->
+            <ul class="sidebar-menu" id="nav-accordion">
+                <li>
+                    <a class="active" href="{% url 'property:home' %}">
+                        <i class="fa fa-dashboard"></i>
+                        <span style="color:white; font-size:24px">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-building-o"></i>
+                        <span class="dash-color">Properties</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-add-property" role="tab" data-toggle="tab">Add Property</a></li>
+                        <li><a href="#tab-display-property" role="tab" data-toggle="tab">List Properties</a></li>
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-home"></i>
+                        <span class="dash-color">Units</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-add-unit" role="tab" data-toggle="tab">Add Unit</a></li>
+                        <li><a href="#tab-display-unit" role="tab" data-toggle="tab">List Units</a></li>
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-users"></i>
+                        <span class="dash-color">LandLords</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-display-property-landlord" role="tab" data-toggle="tab">Add Landlord</a></li>
+                        <li><a href="#tab-display-landlord" role="tab" data-toggle="tab">List Landlords</a></li>
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-users"></i>
+                        <span class="dash-color">Tenants</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-display-property-tenant" role="tab" data-toggle="tab">Add Tenants</a></li>
+                        <li><a href="#tab-display-tenant" role="tab" data-toggle="tab">List Tenants</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-users"></i>
+                        <span class="dash-color">Transferred Tenants</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-display-property-transfer" role="tab" data-toggle="tab"> Transfer Tenant</a></li>
+                        <li><a href="#tab-display-transfer" role="tab" data-toggle="tab">List Transferred Tenants</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class=" fa fa-users"></i>
+                        <span class="dash-color">Checkout tenants</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-display-property-checkout" role="tab" data-toggle="tab"> Checkout a tenant</a></li>
+                        <li><a href="#tab-display-checkout" role="tab" data-toggle="tab">List Checkedout Tenants</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class=" fa fa-money"></i>
+                        <span class="dash-color">Rent</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-display-property-rent" role="tab" data-toggle="tab">Add Rent</a></li>
+                        <li><a href="#tab-display-rent" role="tab" data-toggle="tab">List Rents</a></li>
+                        <li><a href="#tab-display-debtors" role="tab" data-toggle="tab">Debtors</a></li>
+                        <li><a href="#tab-display-creditors" role="tab" data-toggle="tab">Creditors</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <span class="dash-color">Expenses</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#tab-add-expense" role="tab" data-toggle="tab">Add Expense</a></li>
+                        <li><a href="#tab-display-expense" role="tab" data-toggle="tab">List Expenses</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="#tab-display-sms" role="tab" data-toggle="tab">
+                        <i class="fa fa-envelope"></i>
+                        <span class="dash-color">Send Messages</span>
+                    </a>
+                </li>
+            </ul>
+            <!-- sidebar menu end-->
+        </div>
+    </aside>
+    <!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper site-min-height">
+            {% block body %}
+            {% endblock %}
+        </section>
+    </section>
+</section>
+
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="cdn.datatables.net/plug-ins/1.10.20/api/sum().js"></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.js"></script>
+<script src="{% static 'property/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+<script src ="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+<script class="include" type="text/javascript" src="{% static 'property/js/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="{% static 'property/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'property/js/jquery.nicescroll.js" type="text/javascript' %}"></script>
+<script src="{% static 'property/js/jquery.sparkline.js" type="text/javascript' %}"></script>
+<script src="{% static 'property/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js' %}"></script>
+<script src="{% static 'property/js/owl.carousel.js' %}"></script>
+<script src="{% static 'property/js/jquery.customSelect.min.js' %}"></script>
+<script src="{% static 'property/js/respond.min.js' %}"></script>
+
+<!--right slidebar-->
+<script src="{% static 'property/js/slidebars.min.js' %}"></script>
+
+<!--common script for all pages-->
+<script src="{% static 'property/js/common-scripts.js' %}"></script>
+
+<!--script for this page-->
+<script src="{% static 'property/js/sparkline-chart.js' %}"></script>
+<script src="{% static 'property/js/easy-pie-chart.js' %}"></script>
+<script src="{% static 'property/js/count.js' %}"></script>
+
+<script>
+
+      //owl carousel
+
+      $(document).ready(function() {
+          $("#owl-demo").owlCarousel({
+              navigation : true,
+              slideSpeed : 300,
+              paginationSpeed : 400,
+              singleItem : true,
+			  autoPlay:true
+
+          });
+      });
+
+      //custom select box
+
+      $(function(){
+          $('select.styled').customSelect();
+      });
+
+</script>
+<script>
+$(function() {
+  $('input[name="my_dates"]').daterangepicker({
+    opens: 'left',
+    locale: {
+      format: 'YYYY-MM-DD',
+      separator: ' to '
+    }
+  }, function(start, end, label) {
+    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+  });
+});
+
+
+</script>
+<!-- pagination -->
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#expenses').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 1,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 1, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 1 ).footer() ).html(
+                'Ksh.'+pageTotal +' ( Ksh.'+ total +' total)'
+            );
+        },
+
+
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'esxpenses',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'expenses',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'expenses',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+
+    } );
+} );
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#proper').append('<caption style="caption-side: bottom">Samata property management company.</caption>');
+    $('#proper').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'Property',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'Property',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'Property',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#landlordp').append('<caption style="caption-side: bottom">Samata property management company.</caption>');
+    $('#landlord').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'LandLords',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'Landlords',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'LandLords',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tenant').append('<caption style="caption-side: bottom">Samata property management company.</caption>');
+    $('#tenant').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'Tenants',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'Tenants',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'Tenants',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#unit').append('<caption style="caption-side: bottom">Samata property management company.</caption>');
+    $('#unit').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'units',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'units',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'units',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#rent').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 4,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                'Ksh.'+pageTotal +' ( Ksh.'+ total +' total)'
+            );
+
+            // Total over all pages
+            total2 = api
+                .column( 5,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal2 = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 5 ).footer() ).html(
+                'Ksh.'+pageTotal2 +' ( Ksh.'+ total2 +' total)'
+            );
+
+            // Total over all pages
+            total3 = api
+                .column( 6,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal3 = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 6 ).footer() ).html(
+                'Ksh.'+pageTotal3 +' ( Ksh.'+ total3 +' total)'
+            );
+
+
+            // Total over all pages
+            total4 = api
+                .column( 7,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal4 = api
+                .column( 7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 7 ).footer() ).html(
+                'Ksh.'+pageTotal4 +' ( Ksh.'+ total4 +' total)'
+            );
+
+
+
+
+
+        },
+
+
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+
+    } );
+} );
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#debtors').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 4,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                'Ksh.'+pageTotal +' ( Ksh.'+ total +' total)'
+            );
+
+            // Total over all pages
+            total2 = api
+                .column( 5,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal2 = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 5 ).footer() ).html(
+                'Ksh.'+pageTotal2 +' ( Ksh.'+ total2 +' total)'
+            );
+        },
+
+
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+
+    } );
+} );
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#creditors').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 4,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                'Ksh.'+pageTotal +' ( Ksh.'+ total +' total)'
+            );
+
+            
+        },
+
+
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+
+    } );
+} );
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#trans').append('<caption style="caption-side: bottom">Samata property management company.</caption>');
+    $('#trans').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'transferred tenants',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'transferred tenants',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'Transferred tenants',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+
+
+<script>
+$(document).ready(function() {
+    $('#checked').append('<caption style="caption-side: bottom">Samata property management company.</caption>');
+    $('#checked').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'Checked out tenants',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'Checked out tenants',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'Checked out tenants',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+
+</body>
+
+<!-- Mirrored from thevectorlab.net/flatlab/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 14 Aug 2015 03:43:32 GMT -->
+</html>

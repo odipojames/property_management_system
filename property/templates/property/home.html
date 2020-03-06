@@ -1,0 +1,1416 @@
+{% extends 'property/base.html' %}
+{% block title %}Igbaro{% endblock %}
+
+{% load humanize %}
+{% block body %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% if messages %}
+{% for message in messages %}
+{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+
+<div class="alert alert-danger">
+  <strong>{{ message|escape }}</strong>
+</div>
+{% else %}
+<div class="alert alert-success">
+  <strong>{{ message|escape }}</strong>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+<div class="tab-content">
+
+
+  <div class="tab-pane active" id="tab-home">
+    <img src="{% static 'property/img/bg2.jpg' %}" class="img-responsive">
+  </div>
+  <!--Add property start -->
+  <div class="tab-pane" id="tab-add-property">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add property</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{property_form|crispy}}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="property_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Add property end-->
+
+  <!--Add landlord start -->
+  <div class="tab-pane" id="tab-add-landlord">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Landlord</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{landlord_form|crispy }}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="landlord_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add landlord end-->
+
+  <!--add tenant start-->
+  <div class="tab-pane" id="tab-add-tenant">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Tenant</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{tenant_form|crispy}}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="tenant_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add tenant end-->
+
+  <!--add unit start-->
+  <div class="tab-pane" id="tab-add-unit">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Unit</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{unit_form|crispy}}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="unit_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add unit end-->
+
+  <!--add checkout start-->
+  <div class="tab-pane" id="tab-add-checkout">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Checkout Tenants</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{checkout_form|crispy}}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="checkout_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add checkoout end-->
+
+  <!--add transfer start-->
+  <div class="tab-pane" id="tab-add-transfer">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Transferred Tenants</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{transfer_form|crispy}}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="transfer_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add transfer end -->
+
+  <!--add rent start-->
+  <div class="tab-pane" id="tab-add-rent">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Rent</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{ rent_form|crispy }}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="rent_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add rent end -->
+
+  <!--add expense start-->
+  <div class="tab-pane" id="tab-add-expense">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2>Add Expense</h2><br>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-10" style="margin:10px">
+            <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              {{expense_form|crispy}}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-10">
+                    <input name="expense_button" type="submit" class="btn-primary btn" value="Save">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--add expense end-->
+
+  <!--display property start-->
+  <div class="tab-pane" id="tab-display-property">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Igbaro
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="proper">
+        <caption><i>All Properties Report</i></caption>
+        <thead>
+          <tr>
+            <th>Property name</th>
+            <th>Code</th>
+            <th>location</th>
+            <th>Number of Units</th>
+            <th>Number of Floors</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for land in properties %}
+          <tr>
+            <td class="p-name">
+              <a href="{% url 'property:detailed_property_report' land.id %}">{{land.name}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.code}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.location}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_units}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_floors}}</a>
+            </td>
+            <td>
+              <a href="{% url 'property:property_detail' land.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_property' land.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDelet"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirmDelet" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:property' land.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>There are no entries between the specified dates </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display property end-->
+
+  <!--display landlord start-->
+  <div class="tab-pane" id="tab-display-landlord">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Landlords List
+
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="landlord">
+        <thead>
+          <tr>
+            <th>Landlord Name</th>
+            <th>ID/Passport number</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for landlord in landlords %}
+          <tr>
+            <td class="p-name">
+              <a href="#">{{landlord.name}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{landlord.ID_or_Passport}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{landlord.Phone}}</a>
+            </td>
+            <td>
+              <a href="{% url 'property:landlord_detail' landlord.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_landlord' landlord.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDele"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirmDele" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:landlord' landlord.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any landlord yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display landlord end-->
+
+  <!--display landlord start-->
+  <div class="tab-pane" id="tab-display-tenant">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Tenants List
+
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="tenant">
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>ID/Passport number</th>
+            <th>Phone Number</th>
+            <th>Deposit paid</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        </tfoot>
+        <tbody>
+          {% for tenant in tenants %}
+          <tr>
+            <td class="p-name">
+              <a href="#">{{tenant.name}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.ID_or_Passport}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.Phone}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.deposit_paid}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.unit.unit_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.unit.property}}</a>
+            </td>
+            <td>
+              <a href="{% url  'property:tenant_detail' tenant.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_tenant' tenant.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDel"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirmDel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:tenant' tenant.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any tenant yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display landlord end-->
+
+  <!--display landlord start-->
+  <div class="tab-pane" id="tab-display-unit">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Units List
+
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="unit">
+
+        <thead>
+          <tr>
+            <th>Property Name</th>
+            <th>Floor number</th>
+            <th>Unit number</th>
+            <th>Monthly rent</th>
+            <th>Occupied?</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for unit in units %}
+
+          <tr>
+            <td class="p-name">
+              <a href="#">{{unit.property}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.floor_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.unit_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.monthly_rent | stringformat:'d' | intcomma}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">
+                {% if unit.occupied %}
+                occupied
+                {% else %}
+                vaccant
+                {% endif %}
+              </a>
+            </td>
+            <td>
+              <a href="{% url  'property:unit_detail' unit.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_unit' unit.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDe"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirmDe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:unit' unit.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any units yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display landlord end-->
+
+  <!--display landlord start-->
+  <div class="tab-pane" id="tab-display-transfer">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Transferred Tenants List
+      </header>
+      <table class="table table-hover p-table responsive" width="100%" id="trans">
+
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Old Unit</th>
+            <th>New Unit</th>
+            <th>Transfer date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tenant in transferred_tenants %}
+          <tr>
+            <td class="p-name">
+              <a href="#">{{tenant.name}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.old_unit}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.new_unit}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.transfer_date}}</a>
+            </td>
+            <td>
+              <a href="{% url 'property:transferedtenants_detail' tenant.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_transfer' tenant.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmD"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirmD" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:transfer' tenant.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any transferred tenant yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display landlord end-->
+
+  <!--display landlord start-->
+  <div class="tab-pane" id="tab-display-checkout">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Checked out tenant List
+      </header>
+      <table class="table table-hover p-table   responsive" width="100%" id="checked">
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit Stayed</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tenant in checked_out_tenants %}
+          <tr>
+            <td class="p-name">
+              <a href="#">{{tenant.name}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.unit_stayed}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{tenant.name.Phone}}</a>
+            </td>
+            <td>
+              <a href="{%url 'property:checkouttenants_detail' tenant.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_checkout' tenant.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirm"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:checkout' tenant.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any checked out tenant yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display landlord end-->
+
+  <!--display rent-->
+  <div class="tab-pane" id="tab-display-rent">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Rents List
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="rent">
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Floor</th>
+            <th>Rent</th>
+            <th>Service fee</th>
+            <th>Total amount paid</th>
+            <th>Balance</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Floor</th>
+            <th>Rent</th>
+            <th>Service fee</th>
+            <th>Total amount paid</th>
+            <th>Balance</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for unit in units %}
+          <tr>
+            <td class="p-name">
+              <a href="#">{{unit.unit_tenant.name}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.unit_number}}</a>
+            </td>
+
+            <td class="p-name">
+              <a href="#">{{unit.property}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.floor_number}}</a>
+            </td>
+            <td class="p-name">
+              {{unit.unit_rent.last.rent | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              {{unit.unit_rent.last.service_charge | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              {{unit.unit_rent.last.total_amount_paid | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              {{unit.unit_rent.last.Balance | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.unit_rent.last.get_month_display}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.unit_rent.last.year}}</a>
+            </td>
+            <td>
+              <a href="{% url 'property:single_unit_rent' unit.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View more
+              </a>
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any rents yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+  </div>
+
+  <div class="tab-pane" id="tab-display-unit">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All Units List
+
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="unit">
+
+        <thead>
+          <tr>
+            <th>Property Name</th>
+            <th>Floor number</th>
+            <th>Unit number</th>
+            <th>Monthly rent</th>
+            <th>Occupied?</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for unit in units %}
+
+          <tr>
+            <td class="p-name">
+              <a href="#">{{unit.property}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.floor_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.unit_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.monthly_rent | stringformat:'d' | intcomma}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">
+                {% if unit.occupied %}
+                occupied
+                {% else %}
+                vaccant
+                {% endif %}
+              </a>
+            </td>
+            <td>
+              <a href="{% url  'property:unit_detail' unit.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_unit' unit.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDe"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfirmDe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:unit' unit.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any units yet</a>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+
+  <!--display debtors-->
+  <div class="tab-pane" id="tab-display-debtors">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Debtors List
+
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="debtors">
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Floor</th>
+            <th>Amount Paid</th>
+            <th>Balance</th>
+            <th>Month</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Floor</th>
+            <th>Amount Paid</th>
+            <th>Balance</th>
+            <th>Month</th>
+            <th>Year</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for rent in rents %}
+          {% if rent.Balance > 0 %}
+          <tr>
+
+            <td class="p-name">
+              {{rent.unit.unit_tenant.name}}
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.unit.unit_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.unit.property}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.unit.floor_number}}</a>
+            </td>
+            <td class="p-name">
+              {{rent.total_amount_paid | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              {{rent.Balance | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.get_month_display}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.year}}</a>
+              {% endif %}
+            </td>
+
+            {% empty %}
+            <td class="p-name">
+              <a>You have no debtors still</a>
+            </td>
+
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+
+<!-- creditors list -->
+  <div class="tab-pane" id="tab-display-creditors">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Creditors
+
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="creditors">
+        <thead>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Floor</th>
+            <th>Credit</th>
+            <th>Month</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Tenant Name</th>
+            <th>Unit</th>
+            <th>Property</th>
+            <th>Floor</th>
+            <th>credit</th>
+            <th>Month</th>
+            <th>Year</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for rent in rents %}
+          {% if rent.credit > 0 %}
+          <tr>
+
+            <td class="p-name">
+              {{rent.unit.unit_tenant.name}}
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.unit.unit_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.unit.property}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.unit.floor_number}}</a>
+            </td>
+            <td class="p-name">
+              {{rent.credit | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.get_month_display}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{rent.year}}</a>
+              {% endif %}
+            </td>
+
+            {% empty %}
+            <td class="p-name">
+              <a>You have no creditors still</a>
+            </td>
+
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+
+
+
+  <!--display landlord end-->
+
+  <!-- expenses list -->
+  <div class="tab-pane" id="tab-display-expense">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        All expenses List
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="expenses">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>month</th>
+            <th>Year</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Property</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>month</th>
+            <th>Year</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for exp in expenses %}
+          <tr>
+
+            <td class="p-name">
+              <a href="#">{{exp.property_code}}</a>
+            </td>
+
+            <td class="p-name">
+              {{exp.Amount | stringformat:'d' | intcomma}}
+            </td>
+            <td class="p-name">
+              <a href="#">{{exp.Description}}</a>
+            </td>
+            <td class="p-name">
+              {{exp.get_month_display}}
+            </td>
+            <td class="p-name">
+              {{exp.year}}
+            </td>
+            <td class="p-name">
+              {{exp.Date}}
+            </td>
+            <td>
+              <a href="{% url 'property:expense_detail' exp.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
+              </a>
+              <a href="{% url 'property:edit_expense' exp.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfir"><i class="fa fa-trash-o"></i> Delete </a>
+
+              <!--Modal: modalConfirmDelete-->
+              <div class="modal fade" id="modalConfir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                  <!--Content-->
+                  <div class="modal-content text-center">
+                    <!--Header-->
+                    <div class="modal-header d-flex justify-content-center">
+                      <p class="heading">Are you sure?</p>
+                    </div>
+
+
+                    <!--Footer-->
+                    <div class="modal-footer flex-center" style="text-align:center">
+                      <a href="{% url 'property:expense' exp.id %}" class="btn  btn-success">Yes</a>
+                      <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+                    </div>
+                  </div>
+                  <!--/.Content-->
+                </div>
+              </div>
+              <!--Modal: modalConfirmDelete-->
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>You haven't added any expense yet</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+
+
+  <div class="tab-pane" id="tab-display-sms">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        You have sent a total of <span style="font-weight:bold">{{messages_count}}</span>
+        message{{messages_count|pluralize}} and your remaining with
+        <span style="font-weight:bold">{{rem}}</span> message{{rem|pluralize}}
+
+
+      </header>
+      <br><br>
+      <form method="post" action=".">
+        {% csrf_token %}
+        {{message_form|crispy}}
+        <input type="submit" value="Send" name="mes" class="btn btn-primary">
+      </form>
+      <br><br>
+    </section>
+    <!-- page end-->
+  </div>
+
+
+  <!--display property for rent start-->
+  <div class="tab-pane" id="tab-display-property-rent">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Igbaro
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="proper">
+        <caption><i>Select property</i></caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>location</th>
+            <th>Number of Units</th>
+            <th>Number of Floors</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for land in properties %}
+          <tr>
+            <td class="p-name">
+              <a href="{% url 'property:detailed_property_rent' land.id %}"><span style="font-weight:bold">{{land.name}}</span></a>
+            </td>
+            <td class="p-name">
+              <a>{{land.code}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.location}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_units}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_floors}}</a>
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>There are no entries between the specified dates </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display property for rent end-->
+
+  <!--display property for rent start-->
+  <div class="tab-pane" id="tab-display-property-landlord">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Igbaro
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="proper">
+        <caption><i>Select Property</i></caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>location</th>
+            <th>Number of Units</th>
+            <th>Number of Floors</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for land in properties %}
+          <tr>
+            <td class="p-name">
+              <a href="{% url 'property:detailed_property_landlord' land.id %}"><span style="font-weight:bold">{{land.name}}</span></a>
+            </td>
+            <td class="p-name">
+              <a>{{land.code}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.location}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_units}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_floors}}</a>
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>There are no entries between the specified dates </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display property for rent end-->
+
+  <!--display property for rent start-->
+  <div class="tab-pane" id="tab-display-property-tenant">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Igbaro
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="proper">
+        <caption><i>Select Property</i></caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>location</th>
+            <th>Number of Units</th>
+            <th>Number of Floors</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for land in properties %}
+          <tr>
+            <td class="p-name">
+              <a href="{% url 'property:detailed_property_tenant' land.id %}"><span style="font-weight:bold">{{land.name}}</span></a>
+            </td>
+            <td class="p-name">
+              <a>{{land.code}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.location}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_units}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_floors}}</a>
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>There are no entries between the specified dates </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display property for rent end-->
+
+  <!--display property for rent start-->
+  <div class="tab-pane" id="tab-display-property-transfer">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Igbaro
+      </header>
+      <table class="table table-hover p-table  responsive" width="100%" id="proper">
+        <caption><i>Select Property</i></caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>location</th>
+            <th>Number of Units</th>
+            <th>Number of Floors</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for land in properties %}
+          <tr>
+            <td class="p-name">
+              <a href="{% url 'property:detailed_property_transfer' land.id %}"><span style="font-weight:bold">{{land.name}}</span></a>
+            </td>
+            <td class="p-name">
+              <a>{{land.code}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.location}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_units}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_floors}}</a>
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>There are no entries between the specified dates </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display property for rent end-->
+
+  <!--display property for rent start-->
+  <div class="tab-pane" id="tab-display-property-checkout">
+    <!-- page start-->
+    <section class="panel">
+      <header class="panel-heading">
+        Igbaro
+      </header>
+      <table class="table table-hover p-table   responsive" width="100%" id="proper">
+        <caption><i>Select Property</i></caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>location</th>
+            <th>Number of Units</th>
+            <th>Number of Floors</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for land in properties %}
+          <tr>
+            <td class="p-name">
+              <a href="{% url 'property:detailed_property_checkout' land.id %}"><span style="font-weight:bold">{{land.name}}</span></a>
+            </td>
+            <td class="p-name">
+              <a>{{land.code}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.location}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_units}}</a>
+            </td>
+            <td class="p-name">
+              <a>{{land.number_of_floors}}</a>
+            </td>
+            {% empty %}
+            <td class="p-name">
+              <a>There are no entries between the specified dates </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <!-- page end-->
+
+  </div>
+  <!--display property for rent end-->
+
+</div>
+
+{% endblock %}

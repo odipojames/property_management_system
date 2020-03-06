@@ -1,0 +1,80 @@
+{% extends 'property/base_report.html' %}
+{% block title %}Checkout Tenant{% endblock %}
+{% block body %}
+
+<div class="tab-pane" id="tab-display-expense">
+    <!-- page start-->
+    <section class="panel">
+        <header class="panel-heading">
+            Checkout Tenant
+        </header>
+        <table class="table table-hover p-table  responsive" width="100%" id="detailed_proper">
+            <thead>
+            <tr>
+              <th>Property </th>
+              <th>Landlord </th>
+              <th>Tenant</th>
+              <th>Unit number</th>
+              <th>Floor number</th>
+              <th>Monthly rent</th>
+              <th>Occupied</th>
+              <th>Add Tenant</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for r in units %}
+            <tr>
+                <td class="p-name">
+                    <a>{{r.property}}</a>
+                </td>
+                {% for p in r.unit_landlord.all %}
+                <td class="p-name">
+                    <a>{{p.name}}</a>
+                </td>
+                {% empty %}
+                <td class="p-name">
+                    <a>Igbaro</a>
+                </td>
+                {% endfor %}
+                {% for p in r.unit_tenant.all %}
+                <td class="p-name">
+                    <a>{{p.name}}</a>
+                </td>
+                {% empty %}
+                <td class="p-name">
+                    <a>Empty</a>
+                </td>
+                {% endfor %}
+                <td class="p-name">
+                    <a>{{r.unit_number}}</a>
+                </td>
+                <td class="p-name">
+                    <a>{{r.floor_number}}</a>
+                </td>
+                <td class="p-name">
+                    <a>{{r.monthly_rent}}</a>
+                </td>
+                <td class="p-name">
+                  {% if r.occupied %}
+                       <a>occupied</a>
+                  {% else %}
+                       <a>vaccant</a>
+                   {% endif %}
+                </td>
+                <td class="p-name">
+                     <a href="{% url 'property:add_checkout'  r.id %}" class="btn btn-primary btn-xs"><i
+                             class="fa fa-plus"></i> Checkout Tenant </a>
+                </td>
+                {% empty %}
+                <td class="p-name">
+                    <a>There are no matching prperty for your query </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <!-- page end-->
+
+</div>
+{% endblock %}

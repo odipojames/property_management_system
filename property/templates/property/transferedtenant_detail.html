@@ -1,0 +1,49 @@
+{% extends 'property/base.html' %}
+{% load static %}
+{% block body %}
+
+
+<div>
+              <div class="row">
+                <div class="col-md-8">
+                    <section class="panel">
+                        <div class="bio-graph-heading project-heading " style="background-color: #2a3542">
+                            <strong> [  Transfered tenants ] </strong>
+                        </div>
+                        <div class="panel-body bio-graph-info">
+                            <!--<h1>New Dashboard BS3 </h1>-->
+                            <div class="row p-details">
+                                <div class="bio-row">
+                                    <h4><span class="bold">Tenant name </span>: {{ transfered_tenant.name }}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Old Unit</span>: {{ transfered_tenant.old_unit}}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">New Unit</span>:{{ transfered_tenant.new_unit }}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Phone No</span>:{{transfered_tenant.Phone}} </h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Transfer Date</span>:{{transfered_tenant.transfer_date}} </h4>
+                                </div>
+                                
+                               
+
+                                
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    
+
+                </div>
+                
+            </div>
+</div>
+            {% endblock %}
+
+

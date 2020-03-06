@@ -1,0 +1,44 @@
+{% extends 'property/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+
+
+
+<div>
+              <div class="row">
+                <div class="col-md-8">
+                    <section class="panel">
+                        <div class="bio-graph-heading project-heading " style="background-color: #2a3542">
+                            <strong> [  Landlord Details ] </strong>
+                        </div>
+                        <div class="panel-body bio-graph-info">
+                            <!--<h1>New Dashboard BS3 </h1>-->
+                            <div class="row p-details">
+                                <div class="bio-row">
+                                    <h4><span class="bold">Landlord name </span>: {{ landlord.name }}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Landlord ID or Passport</span>: {{ landlord.ID_or_Passport}}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Landlord Phone No</span>:{{ landlord.Phone }}</h4>
+                                </div>
+
+
+
+A
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                </div>
+
+            </div>
+</div>
+            {% endblock %}

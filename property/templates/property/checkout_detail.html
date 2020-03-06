@@ -1,0 +1,49 @@
+{% extends 'property/base.html' %}
+{% load static %}
+{% block body %}
+
+
+<div>
+              <div class="row">
+                <div class="col-md-8">
+                    <section class="panel">
+                        <div class="bio-graph-heading project-heading " style="background-color: #2a3542">
+                            <strong> [  Checkedout  Tenants] </strong>
+                        </div>
+                        <div class="panel-body bio-graph-info">
+                            <!--<h1>New Dashboard BS3 </h1>-->
+                            <div class="row p-details">
+                                <div class="bio-row">
+                                    <h4><span class="bold">Property name </span>: {{ property.name }}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Property Code</span>: {{ property.code }}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">Property location</span>:{{ property.location }}</h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">No of Units</span>:{{property.number_of_units}} </h4>
+                                </div>
+                                <div class="bio-row">
+                                    <h4><span class="bold">No of floors </span>:{{property.number_of_floors}} </h4>
+                                </div>
+                                
+                               
+
+                                
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    
+
+                </div>
+                
+            </div>
+</div>
+            {% endblock %}
+
+
