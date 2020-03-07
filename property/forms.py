@@ -30,7 +30,7 @@ class UnitForm(forms.ModelForm):
 
     class Meta:
         model = Unit
-        fields = ('property', 'unit_number', 'floor_number', 'monthly_rent')
+        fields = ('property', 'unit_number','type', 'floor_number', 'monthly_rent')
 
 
 class TenantForm(forms.ModelForm):

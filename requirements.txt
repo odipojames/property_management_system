@@ -51,6 +51,7 @@ num2words==0.5.10
 oauthlib==3.1.0
 openpyxl==3.0.0
 Pillow==6.2.1
+pkg-resources==0.0.0
 psycopg2==2.8.4
 py-moneyed==0.8.0
 pycparser==2.19

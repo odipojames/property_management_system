@@ -1,14 +1,13 @@
 {% extends 'property/base.html' %}
 {% load static %}
 {% block body %}
-
-
+{% load humanize %}
 <div>
               <div class="row">
                 <div class="col-md-8" id="print-rent">
                     <section class="panel">
                         <div class="bio-graph-heading project-heading " style="background-color: #2a3542">
-                            <strong> [  Rent  Details ] </strong>
+                            <strong> [Ibgaro Realtors Ltd ] </strong>
                         </div>
                         <div class="panel-body bio-graph-info">
                             <!--<h1>New Dashboard BS3 </h1>-->
@@ -21,19 +20,25 @@
                                       {{rent.unit.unit_tenant.name}}</h4>
                                 </div>
                                 <div class="bio-row">
-                                    <h4><span class="bold">rent paid</span>:{{ rent.rent}}</h4>
+                                    <h4><span class="bold">rent paid</span>:{{ rent.rent | stringformat:'d' | intcomma}}</h4>
                                 </div>
                                 <div class="bio-row">
-                                    <h4><span class="bold">service fee charges</span>:{{ rent.service_charge}}</h4>
+                                    <h4><span class="bold">service fee charges</span>:{{ rent.service_charge  | stringformat:'d' | intcomma}}</h4>
                                 </div>
                                 <div class="bio-row">
                                     <h4><span class="bold">Date paid</span>:{{ rent.date_paid}}</h4>
                                 </div>
+                                {% if rent.credit > 0 %}
                                 <div class="bio-row">
-                                    <h4><span class="bold">balance</span>:{{ rent.Balance}}</h4>
+                                    <h4><span class="bold">credit</span>:{{ rent.credit | stringformat:'d' | intcomma}}</h4>
                                 </div>
+                                {% else  %}
                                 <div class="bio-row">
-                                    <h4><span class="bold">total amount paid</span>:{{ rent.total_amount_paid}}</h4>
+                                    <h4><span class="bold">balance</span>:{{ rent.Balance | stringformat:'d' | intcomma}}</h4>
+                                </div>
+                                {% endif %}
+                                <div class="bio-row">
+                                    <h4><span class="bold">total amount paid</span>:{{ rent.total_amount_paid | stringformat:'d' | intcomma}}</h4>
                                 </div>
 
 
@@ -47,54 +52,45 @@
 
 
                 </div>
-                  <button type="button" class="print">Print!</button>
-                  </button>
+
             </div>
+              <input type="button" value="Print Reciept" onclick="javascript:printerDiv('print-rent')" />
 </div>
 
-<script type='text/javascript'>
-$(function() {
-$("#print-rent").find('.print').on('click', function() {
+<script language="javascript" type="text/javascript">
+function printerDiv(divID) {
+//Get the HTML of div
 
-$("#print-rent").print({
+var divElements = document.getElementById(divID).innerHTML;
 
-// Use Global styles
-globalStyles : false,
+//Get the HTML of whole page
+var oldPage = document.body.innerHTML;
 
-// Add link with attrbute media=print
-mediaPrint : false,
+//Reset the pages HTML with divs HTML only
 
-//Custom stylesheet
-stylesheet : "http://fonts.googleapis.com/css?family=Inconsolata",
+     document.body.innerHTML =
 
-//Print in a hidden iframe
-iframe : false,
+     "<html><head><title></title></head><body>" +
+     divElements + "</body>";
 
-// Don't print this
-noPrintSelector : ".avoid-this",
 
-// Add this on top
-append : "Free jQuery Plugins<br/>",
 
-// Add this at bottom
-prepend : "<br/>jQueryScript.net",
+//Print Page
+window.print();
 
-// Manually add form values
-manuallyCopyFormValues: true,
+//Restore orignal HTML
+document.body.innerHTML = oldPage;
 
-// resolves after print and restructure the code for better maintainability
-deferred: $.Deferred(),
-
-// timeout
-timeout: 250,
-
-// Custom title
-title: null,
-
-// Custom document type
-doctype: '<!doctype html>'
-
-});
-});
+}
 </script>
+
+<style>
+  @media print {
+  body {
+    width: 8px;
+    height: 4px;
+  }
+
+}
+</style>
             {% endblock %}

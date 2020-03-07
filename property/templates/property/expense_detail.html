@@ -9,7 +9,7 @@
                 <div class="col-md-8">
                     <section class="panel">
                         <div class="bio-graph-heading project-heading " style="background-color: #2a3542">
-                            <strong> [  Expense Details ] </strong>
+                            <strong> [Ibgaro Realtors Lrd ] </strong>
                         </div>
                         <div class="panel-body bio-graph-info">
                             <!--<h1>New Dashboard BS3 </h1>-->
@@ -21,7 +21,7 @@
                                     <h4><span class="bold">Description</span>: {{ expense.Description }}</h4>
                                 </div>
                                 <div class="bio-row">
-                                    <h4><span class="bold">Amount Incurred</span>:{{ expense.Amount }}</h4>
+                                    <h4><span class="bold">Amount Incurred</span>:{{ expense.Amount | stringformat:'d' | intcomma }}</h4>
                                 </div>
                                 <div class="bio-row">
                                     <h4><span class="bold">Date</span>:{{expense.Date}} </h4>

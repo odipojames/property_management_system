@@ -29,12 +29,13 @@ class Unit(models.Model):
     date_added = models.DateField(auto_now_add=True, null=True)
     property = models.ForeignKey(Property,on_delete=models.CASCADE)
     unit_number = models.CharField(max_length=300)
-
-
+    TYPE_CHOICES = [('shop', 'shop'),('single', 'single'),
+    ('bedsita', 'bedsita'),('one bedroom', 'one bedroom'),('two bedroom', 'two bedroom'),('three bedroom', 'three bedroom'),('four bedroom', 'four bedroom'),]
+    type = models.CharField(max_length=30,choices=TYPE_CHOICES,null =True)
     floor_CHOICES = [('Ground', 'Ground'),
     ('Parking-Bay', 'Parking-Bay'),]
     for r in range(40):
-        floor_CHOICES.append((num2words(r),num2words(r)))
+        floor_CHOICES.append((num2words(r,to='ordinal'),num2words(r, to='ordinal')))
     floor_number =models.CharField(max_length=300,null=True,choices=floor_CHOICES)
     monthly_rent = models.FloatField()
     occupied = models.BooleanField(default=False)

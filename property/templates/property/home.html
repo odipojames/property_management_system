@@ -495,6 +495,7 @@
             <th>Property Name</th>
             <th>Floor number</th>
             <th>Unit number</th>
+            <th>type</th>
             <th>Monthly rent</th>
             <th>Occupied?</th>
             <th>Actions</th>
@@ -512,6 +513,9 @@
             </td>
             <td class="p-name">
               <a href="#">{{unit.unit_number}}</a>
+            </td>
+            <td class="p-name">
+              <a href="#">{{unit.type}}</a>
             </td>
             <td class="p-name">
               <a href="#">{{unit.monthly_rent | stringformat:'d' | intcomma}}</a>
@@ -756,9 +760,15 @@
         <tbody>
           {% for unit in units %}
           <tr>
+            {% if unit.unit_tenant %}
             <td class="p-name">
               <a href="#">{{unit.unit_tenant.name}}</a>
             </td>
+            {% else %}
+            <td class="p-name">
+              <a href="#">curently vaccant</a>
+            </td>
+            {% endif %}
             <td class="p-name">
               <a href="#">{{unit.unit_number}}</a>
             </td>

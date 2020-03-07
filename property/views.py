@@ -20,8 +20,7 @@ from django.contrib.auth import login, authenticate
 import calendar
 from django.core.validators import ValidationError
 from django.db import IntegrityError
-from word2number import w2n
-from num2words import num2words
+
 
 
 # Initialize SDK
@@ -84,10 +83,6 @@ def home(request):
             if unit_form.is_valid():
                 property_name = unit_form.cleaned_data['property']
                 floor_number = unit_form.cleaned_data['floor_number']
-                if int(w2n.word_to_num(floor_number)) > property_name.number_of_floors:
-                    messages.error(request, f"this property can only accept upto {num2words(property_name.number_of_floors,to='ordinal')} floor")
-                    unit_form = UnitForm()
-                    return redirect('property:home')
                 unit_number = unit_form.cleaned_data['unit_number']
                 units = Unit.objects.all()
                 for unit in units:
@@ -99,8 +94,7 @@ def home(request):
                 if checker:
                     unit_form.save()
                     messages.success(request, "Unit added successfully")
-                    unit_form = UnitForm()
-                return render(request,'property/home.html',{'unit_form':unit_form})
+                    return redirect('property:home')
             else:
                 messages.error(request, "Error adding unit")
     else:
@@ -422,6 +416,7 @@ def home(request):
                             if ches:
                                 messages.success(
                                     request, "Message seeeent successfully")
+                                return redirect('property:home')
 
                             else:
                                 messages.error(request,
@@ -1012,11 +1007,10 @@ def add_transferred_tenant(request, id):
                 if cheker1 and cheker2:
                     messages.success(
                         request, "Tenant transferred successfully")
-                else:
-                    messages.success(
-                        request, "Tenant transferred successfully")
+                    return redirect('property:home')
 
-                return redirect('property:home')
+
+
             else:
                 messages.error(request, "Error adding transferred tenant")
     else:
