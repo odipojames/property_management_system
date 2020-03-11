@@ -40,7 +40,7 @@ def home(request):
     rents = Rent.objects.all()
     # debtors = Rent.objects.filter(Balance > 0)
     expenses = Expense.objects.all()
-    message_ins = IgbaroMessageCounter.objects.get(name='admin')
+    message_ins = IbgaroMessageCounter.objects.get(name='admin')
     messages_count = message_ins.total_messages_sent
     properties_count = properties.count()
     landlords_count = landlords.count()
@@ -156,7 +156,7 @@ def home(request):
                     counter = message_allocated.count
                     print(counter)
                     if cost < counter:
-                        message_counter = IgbaroMessageCounter.objects.get(
+                        message_counter = IbgaroMessageCounter.objects.get(
                             name='admin')
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
@@ -244,7 +244,7 @@ def home(request):
                     print(counter)
                     print(phone)
                     if cost < counter:
-                        message_counter = IgbaroMessageCounter.objects.get(
+                        message_counter = IbgaroMessageCounter.objects.get(
                             name='admin')
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
@@ -285,7 +285,7 @@ def home(request):
                 phone = db_tenant.Phone
                 rent_form.save()
                 sms = africastalking.SMS
-                message = 'Thank you for paying your rent\n Regards Igbaro'
+                message = 'Thank you for paying your rent\n  Regards Ibgaro Realtors'
                 cost = 0
                 m = len(message)
                 if m <= 144:
@@ -301,7 +301,7 @@ def home(request):
                 message_allocated = Allocated_message.objects.get(name='admin')
                 counter = message_allocated.count
                 if cost < counter:
-                    message_counter = IgbaroMessageCounter.objects.get(
+                    message_counter = IbgaroMessageCounter.objects.get(
                         name='admin')
                     message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                     message_counter.save()
@@ -366,7 +366,7 @@ def home(request):
                             counter = counter - mes_count
                             message_allocated.count = counter
                             message_allocated.save()
-                            message_counter = IgbaroMessageCounter.objects.get(
+                            message_counter = IbgaroMessageCounter.objects.get(
                                 name='admin')
                             message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                             message_counter.save()
@@ -407,7 +407,7 @@ def home(request):
                                 counter = counter - mes_count
                                 message_allocated.count = counter
                                 message_allocated.save()
-                                message_counter = IgbaroMessageCounter.objects.get(
+                                message_counter = IbgaroMessageCounter.objects.get(
                                     name='admin')
                                 message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                                 message_counter.save()
@@ -750,43 +750,72 @@ def add_rent(request, id):
 
                 new_rent_form.save()
                 sms = africastalking.SMS
-                if rent < monthly_rent:
-                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\nBalance ksh.{}\n Regards Igbaro.'.format(
+                if rent <= monthly_rent:
+                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\nBalance ksh.{}\n  Regards Ibgaro Realtors.'.format(
                         name, rent, month, year, balance)
+                    cost = 0
+                    m = len(message)
+                    if m <= 144:
+                        cost = 1
+                    elif m <= 304:
+                        cost = 2
+                    elif m <= 464:
+                        cost = 3
+                    elif m <= 624:
+                        cost = 4
+                    elif m <= 784:
+                        cost = 5
+                    message_allocated = Allocated_message.objects.get(name='admin')
+                    counter = message_allocated.count
+                    if cost < counter:
+                        message_counter = IbgaroMessageCounter.objects.get(
+                            name='admin')
+                        message_counter.total_messages_sent = message_counter.total_messages_sent + 1
+                        message_counter.save()
+                        sender = 'softsearch'
+                        response = sms.send(message, [phone], sender)
+                        counter = counter - cost
+                        message_allocated.count = counter
+                        message_allocated.save()
+                        messages.success(request, "Rent added successfully")
+                    else:
+                        messages.error(
+                            request, "You dont have sufficent credit to send messages please recharge")
+                    return redirect('property:home')
                 if rent > monthly_rent:
-                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\ncredit carried forward ksh.{}\n Regards Igbaro.'.format(
+                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\ncredit carried forward ksh.{}\n  Regards Ibgaro Realtors.'.format(
                         name, rent, month, year, credit)
-                cost = 0
-                m = len(message)
-                if m <= 144:
-                    cost = 1
-                elif m <= 304:
-                    cost = 2
-                elif m <= 464:
-                    cost = 3
-                elif m <= 624:
-                    cost = 4
-                elif m <= 784:
-                    cost = 5
-                message_allocated = Allocated_message.objects.get(name='admin')
-                counter = message_allocated.count
-                if cost < counter:
-                    message_counter = IgbaroMessageCounter.objects.get(
-                        name='admin')
-                    message_counter.total_messages_sent = message_counter.total_messages_sent + 1
-                    message_counter.save()
-                    sender = 'softsearch'
-                    response = sms.send(message, [phone], sender)
-                    counter = counter - cost
-                    message_allocated.count = counter
-                    message_allocated.save()
-                    messages.success(request, "Rent added successfully")
+                    cost = 0
+                    m = len(message)
+                    if m <= 144:
+                        cost = 1
+                    elif m <= 304:
+                        cost = 2
+                    elif m <= 464:
+                        cost = 3
+                    elif m <= 624:
+                        cost = 4
+                    elif m <= 784:
+                        cost = 5
+                    message_allocated = Allocated_message.objects.get(name='admin')
+                    counter = message_allocated.count
+                    if cost < counter:
+                        message_counter = IbgaroMessageCounter.objects.get(
+                            name='admin')
+                        message_counter.total_messages_sent = message_counter.total_messages_sent + 1
+                        message_counter.save()
+                        sender = 'softsearch'
+                        response = sms.send(message, [phone], sender)
+                        counter = counter - cost
+                        message_allocated.count = counter
+                        message_allocated.save()
+                        messages.success(request, "Rent added successfully")
+                    else:
+                        messages.error(
+                            request, "You dont have sufficent credit to send messages please recharge")
+                    return redirect('property:home')
                 else:
-                    messages.error(
-                        request, "You dont have sufficent credit to send messages please recharge")
-                return redirect('property:home')
-            else:
-                messages.error(request, "Error adding rent")
+                    messages.error(request, "Error adding rent")
     else:
         rent_form = RentForm()
     return render(request, 'property/add_rent.html', {'rent_form': rent_form})
@@ -850,7 +879,7 @@ def add_tenant(request, id):
                 new_tenant_form.save()
                 if phone != None:
                     sms = africastalking.SMS
-                    message = 'Dear {},You have a new tenant in your house number {},\nRegards Igbaro.'.format(
+                    message = 'Dear {},You have a new tenant in your house number {},\n Regards Ibgaro Realtors.'.format(
                         name, unit)
                     cost = 0
                     m = len(message)
@@ -869,7 +898,7 @@ def add_tenant(request, id):
                     counter = message_allocated.count
                     print(counter)
                     if cost < counter:
-                        message_counter = IgbaroMessageCounter.objects.get(
+                        message_counter = IbgaroMessageCounter.objects.get(
                             name='admin')
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
@@ -932,7 +961,7 @@ def add_transferred_tenant(request, id):
                 cheker1 = False
                 if phone != None:  # send text to privious LandLord
                     sms = africastalking.SMS
-                    message = 'Dear {},tenant has been transferred out of your unit number {}\nRegards Igbaro.'.format(
+                    message = 'Dear {},tenant has been transferred out of your unit number {}\n Regards Ibgaro Realtors.'.format(
                         name, unit)
                     cost = 0
                     m = len(message)
@@ -951,7 +980,7 @@ def add_transferred_tenant(request, id):
                     counter = message_allocated.count
                     print(counter)
                     if cost < counter:
-                        message_counter = IgbaroMessageCounter.objects.get(
+                        message_counter = IbgaroMessageCounter.objects.get(
                             name='admin')
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
@@ -972,7 +1001,7 @@ def add_transferred_tenant(request, id):
                 cheker2 = False
                 if phone1 != None:  # send text to new LandLord
                     sms = africastalking.SMS
-                    message = 'Dear {},tenant has been transferred into your unit number {}\nRegards Igbaro.'.format(
+                    message = 'Dear {},tenant has been transferred into your unit number {}\n Regards Ibgaro Realtors.'.format(
                         name1, new_unit)
                     cost = 0
                     m = len(message)
@@ -991,7 +1020,7 @@ def add_transferred_tenant(request, id):
                     counter = message_allocated.count
                     print(counter)
                     if cost < counter:
-                        message_counter = IgbaroMessageCounter.objects.get(
+                        message_counter = IbgaroMessageCounter.objects.get(
                             name='admin')
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
@@ -1054,7 +1083,7 @@ def add_checkout(request, id):
                     new_check.save()
                     db_tenant.unit.delete()
                     sms = africastalking.SMS
-                    message = 'Dear {} tenant has moved out your house number {}\nRegards Igbaro.'.format(
+                    message = 'Dear {} tenant has moved out your house number {}\n Regards Ibgaro Realtors.'.format(
                         name, unit)
                     cost = 0
                     m = len(message)
@@ -1074,7 +1103,7 @@ def add_checkout(request, id):
                     print(counter)
                     print(phone)
                     if cost < counter:
-                        message_counter = IgbaroMessageCounter.objects.get(
+                        message_counter = IbgaroMessageCounter.objects.get(
                             name='admin')
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()

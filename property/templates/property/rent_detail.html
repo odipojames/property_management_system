@@ -6,7 +6,9 @@
               <div class="row">
                 <div class="col-md-8" id="print-rent">
                     <section class="panel">
+                      <img src="{% static 'property/img/ibgaro.png' %}" class="img-responsive" style=" width:300px;height:300px; border-radius:30%;padding:0px;margin-top:-50px;margin-bottom:-150px">
                         <div class="bio-graph-heading project-heading " style="background-color: #2a3542">
+
                             <strong> [Ibgaro Realtors Ltd ] </strong>
                         </div>
                         <div class="panel-body bio-graph-info">
@@ -84,12 +86,15 @@ document.body.innerHTML = oldPage;
 }
 </script>
 
-<style>
+<style media="print">
   @media print {
   body {
     width: 8px;
     height: 4px;
+
   }
+
+
 
 }
 </style>

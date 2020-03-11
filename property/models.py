@@ -81,7 +81,7 @@ class Tenant(models.Model):
 
 class Transfered_Tenant(models.Model):
     date_added = models.DateField(auto_now_add=True, null=True)
-    name = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    name = models.ForeignKey(Tenant, on_delete=models.CASCADE,related_name='transfer_tenant')
     old_unit = models.CharField(max_length=200)
     new_unit = models.ForeignKey(Unit, on_delete=models.CASCADE,related_name='units')
     transfer_date = models.DateField(("Date"), default=date.today)
@@ -195,6 +195,6 @@ class Allocated_message(models.Model):
         return self.name
 
 
-class IgbaroMessageCounter(models.Model):
+class IbgaroMessageCounter(models.Model):
     name = models.CharField(max_length=200, null=True)
     total_messages_sent = models.PositiveIntegerField()

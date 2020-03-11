@@ -20,6 +20,6 @@ class MessagesAdmin(admin.ModelAdmin):
     list_display = ['total_messages_sent']
 
 
-admin.site.register(IgbaroMessageCounter, MessagesAdmin)
+admin.site.register(IbgaroMessageCounter, MessagesAdmin)
 
 admin.site.register(Allocated_message)

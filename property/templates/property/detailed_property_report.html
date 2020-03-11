@@ -33,18 +33,18 @@
                 </td>
                 {% empty %}
                 <td class="p-name">
-                    <a>Igbaro</a>
+                    <a>Ibgaro</a>
                 </td>
                 {% endfor %}
-                {% for p in r.unit_tenant.all %}
+                {% if r.unit_tenant %}
                 <td class="p-name">
-                    <a>{{p.name}}</a>
+                    <a>{{r.unit_tenant.name}}</a>
                 </td>
-                {% empty %}
+                {% else %}
                 <td class="p-name">
-                    <a>Empty</a>
+                    <a>empty</a>
                 </td>
-                {% endfor %}
+                {% endif %}
                 <td class="p-name">
                     <a>{{r.unit_number}}</a>
                 </td>
