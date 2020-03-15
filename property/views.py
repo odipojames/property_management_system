@@ -707,16 +707,6 @@ def signup_view(request):
         form = SignUpForm()
     return render(request, 'property/signup.html', {'form': form})
 
-
-def sender(request):
-    sms = africastalking.SMS
-    recipients = ['+254707371208']
-    message = 'Hey Kwach'
-    sender = 'softsearch'
-    response = sms.send(message, recipients, sender)
-    print(response)
-    return redirect('property:home')
-
 #adding rent
 def add_rent(request, id):
     rent_form = None
@@ -833,6 +823,9 @@ def add_landlord(request, id):
     if request.method == 'POST':
         if 'landlord_button' in request.POST:
             landlord_form = LandlordForm(data=request.POST)
+            if unit.landlord_assigned == True:
+                messages.error(request, "Landlord already assigned to the unit")
+                return redirect('property:home')
             if landlord_form.is_valid():
                 new_land_form = landlord_form.save(commit=False)
                 unit = Unit.objects.get(id=unit.id)
