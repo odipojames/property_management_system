@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'smart_selects',
     'django_celery_beat',
     'django_extensions',
+    'bootstrap_modal_forms',
 
 ]
 

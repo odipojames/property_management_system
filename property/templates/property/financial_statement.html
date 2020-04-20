@@ -1,0 +1,176 @@
+{% extends 'property/base.html' %}
+{% block title %}Financial Report{% endblock %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% load month_tags %}
+
+<div class="tab-pane" id="tab-display-fin-report">
+    <!-- page start-->
+    <section class="panel">
+        <header class="panel-heading">
+            Property monthly financilal reports of </br>
+
+                {{property.name}}</br>
+                {{property.number_of_units}} units
+
+        </header>
+        <table class="table table-hover p-table  responsive" width="100%" id="fin_report">
+            <thead>
+            <tr>
+              <th>Total rent collected</th>
+              <th>Total service charge</th>
+              <th>Total amount collected</th>
+              <th>Total balance</th>
+              <th>Month</th>
+              <th>Year</th>
+            </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Total rent collected</th>
+                <th>Total service charge</th>
+                <th>Total amount collected</th>
+                <th>Total balance</th>
+                <th>Month</th>
+                <th>Year</th>
+              </tr>
+            </tfoot>
+            <tbody>
+           {% for r in report %}
+            <tr>
+                <td class="p-name">
+                    {{r.rent__sum | stringformat:'d' | intcomma}}
+                </td>
+                <td class="p-name">
+                    {{r.service_charge__sum | stringformat:'d' | intcomma}}
+                </td>
+                <td class="p-name">
+                    {{r.total_amount_paid__sum | stringformat:'d' | intcomma}}
+                </td>
+                <td class="p-name">
+                    {{r.Balance__sum | stringformat:'d' | intcomma}}
+                </td>
+
+                <td class="p-name">
+                    <a>{{r.month | month_name  }}</a>
+                </td>
+
+                <td class="p-name">
+                    <a>{{r.year}}</a>
+                </td>
+
+                {% empty %}
+                <td class="p-name">
+                    <a>There are no matching prperty for your query </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <!-- page end-->
+
+</div>
+<!-- <script type="text/javascript">
+$(document).ready(function() {
+    $('#fin_report').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 4,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                'Ksh.'+pageTotal +' ( Ksh.'+ total +' total)'
+            );
+
+            // Total over all pages
+            total2 = api
+                .column( 5,)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal2 = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 5 ).footer() ).html(
+                'Ksh.'+pageTotal2 +' ( Ksh.'+ total2 +' total)'
+            );
+        },
+
+
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'rent',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+
+    } );
+} );
+</script> -->
+{% endblock %}

@@ -258,6 +258,7 @@
             <th>location</th>
             <th>Number of Units</th>
             <th>Number of Floors</th>
+            <th>Financial Report</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -265,7 +266,7 @@
           {% for land in properties %}
           <tr>
             <td class="p-name">
-              <a href="{% url 'property:detailed_property_report' land.id %}">{{land.name}}</a>
+              <a href="{% url 'property:detailed_property_report' land.id %}">{{land.name }}</a>
             </td>
             <td class="p-name">
               <a>{{land.code}}</a>
@@ -279,12 +280,15 @@
             <td class="p-name">
               <a>{{land.number_of_floors}}</a>
             </td>
+            <td class="p-name">
+              <a href="{% url 'property:statement' land.id %}">view financilal report</a>
+            </td>
             <td>
               <a href="{% url 'property:property_detail' land.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
               </a>
               <a href="{% url 'property:edit_property' land.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
 
-              <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDelet"><i class="fa fa-trash-o"></i> Delete </a>
+              <a ro le="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfirmDelet"><i class="fa fa-trash-o"></i> Delete </a>
 
               <!--Modal: modalConfirmDelete-->
               <div class="modal fade" id="modalConfirmDelet" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

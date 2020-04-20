@@ -11,6 +11,7 @@ from num2words import num2words
 from django.core.validators import ValidationError
 from django.core.exceptions import NON_FIELD_ERRORS
 import calendar
+from bootstrap_modal_forms.forms import BSModalForm
 
 class PropertyForm(forms.ModelForm):
     class Meta:

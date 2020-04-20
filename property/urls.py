@@ -47,5 +47,7 @@ urlpatterns = [
     re_path(r'^detailed/property/checkout/(?P<id>\d+)/', views.detailed_property_checkout, name='detailed_property_checkout'),
     re_path(r'^add/checkout/(?P<id>\d+)/', views.add_checkout, name='add_checkout'),
     path('unit/rent/<int:id>',views.rent_detail,name='single_unit_rent'),
+    path('fin/statement/<int:id>',views.property_financial_statement,name='statement'),
+    path('fin/statement/',views.property_financial_summary,name='summary_report'),
 
 ]

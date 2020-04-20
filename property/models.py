@@ -113,8 +113,8 @@ class Rent(models.Model):
     unit = models.ForeignKey(Unit,on_delete=models.CASCADE,null=True,related_name='unit_rent')
     rent = models.FloatField()
     total_amount_paid = models.FloatField(null = True)
-    Balance = models.FloatField(null=True)
     credit = models.FloatField(null=True)
+    Balance = models.FloatField(null=True)
     mode_of_payment = models.CharField(max_length=50, choices=PAYMENT, null=True)
     Reciept_no = models.CharField(max_length=300,blank=True,null=True)
     paid = models.BooleanField(default=True)
@@ -131,30 +131,35 @@ class Rent(models.Model):
          ordering = ('-year','month','unit')
          get_latest_by = ('month','year',)
 
-    def Balance(self):
+    @property
+    def get_balance(self):
         if self.rent < self.unit.monthly_rent:
-            self.Balance = self.unit.monthly_rent - self.rent
+            Balance = self.unit.monthly_rent - self.rent
         else:
-            self.Balance = 0
-        return self.Balance
+            Balance = 0
+        return Balance
 
-    def credit(self):
+    @property
+    def get_credit(self):
         if self.rent > self.unit.monthly_rent :
-            self.credit = self.rent - self.unit.monthly_rent
+            credit = self.rent - self.unit.monthly_rent
         else:
-            self.credit = 0
+            credit = 0
 
-        return self.credit
+        return credit
 
-    def total_amount_paid(self):
-        self.total_amount_paid = self.rent + self.service_charge
-        return self.total_amount_paid
+    @property
+    def get_total_amount_paid(self):
+        total_amount_paid = self.rent + self.service_charge
+        return total_amount_paid
 
 
+    def save(self, *args, **kwarg):
+        self.total_amount_paid = self.get_total_amount_paid
+        self.Balance = self.get_balance
+        self.credit = self.get_credit
+        super(Rent, self).save(*args, **kwarg)
 
-    def __str__(self):
-
-        return 'ksh. {}'.format(self.total_amount_paid)
 
 
 

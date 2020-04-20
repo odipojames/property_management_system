@@ -21,6 +21,10 @@ import calendar
 from django.core.validators import ValidationError
 from django.db import IntegrityError
 
+from django.db.models import Sum, Count,Min
+
+
+
 
 
 # Initialize SDK
@@ -70,8 +74,10 @@ def home(request):
                 property_form.save()
                 messages.success(request, "Property added successfully")
                 return redirect('property:home')
-            else:
-                messages.error(request, "Error adding property")
+            if property_form.is_valid() == False:
+                property_form = PropertyForm(data=request.POST)
+                messages.error(request, "Error adding property, code and name must be unique")
+                return redirect('property:home')
     else:
         property_form = PropertyForm()
 
@@ -1129,7 +1135,23 @@ def add_checkout(request, id):
     return render(request, 'property/add_checkout.html', {'checkout_form': checkout_form})
 
 
+
 def detailed_property_checkout(request, id):
     property = Property.objects.get(id=id)
     units = Unit.objects.filter(property__name=property.name, occupied=True)
     return render(request, 'property/detailed_property_checkout.html', {'units': units})
+
+def property_financial_statement(request, id):
+    """financial collecton on monthly basis for partcular property"""
+
+    property = Property.objects.get(id=id)
+    qs = Rent.objects.filter(unit__property=property)
+    report = qs.values('year','month').order_by('-year','month').annotate(Sum('rent'),Sum('service_charge'),Sum('total_amount_paid'),Sum('Balance'),Count('pk'))
+    return render(request, 'property/financial_statement.html', {'report': report,'property':property})
+
+
+def property_financial_summary(request):
+    """financial collecton on monthly basis for all properties """
+    qs = Rent.objects.all()
+    report = qs.values('year','month').order_by('-year','month').annotate(Sum('rent'),Sum('service_charge'),Sum('total_amount_paid'),Sum('Balance'),Count('pk'))
+    return render(request, 'property/financial_summary.html', {'report': report})
