@@ -8,8 +8,112 @@ from django.core.validators import RegexValidator
 from num2words import num2words
 from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth.models import (
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
+)
+from django.core.exceptions import ValidationError
+from . helpers import enforce_all_required_arguments_are_truthy
 
 # Create your models here.
+
+class UserManager(BaseUserManager):
+    """
+    Custom manager to handle the User model methods.
+    """
+
+    def create_user(
+        self, full_name=None, email=None, password=None, phone=None, role=None, **kwargs
+    ):
+        REQUIRED_ARGS = ("full_name", "email", "password", "phone")
+
+        enforce_all_required_arguments_are_truthy(
+            {
+                "full_name": full_name,
+                "email": email,
+                "password": password,
+                "phone": phone,
+            },
+            REQUIRED_ARGS,
+        )
+        # ensure that the passwords are strong enough.
+        try:
+            password_validation.validate_password(password)
+        except ValidationError as exc:
+            # return error accessible in the appropriate field, ie password
+            raise ValidationError({"password": exc.messages}) from exc
+
+        user = self.model(
+            full_name=full_name,
+            email=self.normalize_email(email),
+            phone=phone,
+            **kwargs
+        )
+
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(
+        self, full_name=None, email=None, password=None, phone=None, role=None, **kwargs
+    ):
+        """
+        This is the method that creates superusers in the database.
+        """
+
+        admin = self.create_user(
+            full_name=full_name,
+            email=email,
+            password=password,
+            phone=phone,
+            is_superuser=True,
+            is_active = True,
+            is_staff = True
+        )
+
+        return admin
+
+class User(PermissionsMixin,AbstractBaseUser):
+    """
+    Custom user model to be used throughout the application.
+    """
+
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField(unique=True)
+    phone_regex = RegexValidator(regex=r'^(?:\+)', message="Phone number must be entered in the format: '+2549999999'. Up to 15 digits allowed.")
+    phone = models.CharField(validators=[phone_regex], max_length=15,null=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    REQUIRED_FIELDS = ["full_name", "phone"]
+    USERNAME_FIELD = "email"
+
+    objects = UserManager()
+
+    def __str__(self):
+
+        return self.get_username()
+
+    @property
+    def get_email(self):
+
+        return self.email
+
+    @property
+    def get_full_name(self):
+        return self.full_name
+
+    @property
+    def get_phone(self):
+        return self.phone
+
+    def save(self, *args, **kwarg):
+        self.email = self.get_email
+        self.full_name = self.get_full_name
+        self.phone = self.get_phone
+        super(User, self).save(*args, **kwarg)
 
 
 class Property(models.Model):
@@ -71,6 +175,7 @@ class Tenant(models.Model):
     unit = models.OneToOneField(Unit, related_name='unit_tenant', on_delete=models.CASCADE)
     deposit_paid = models.FloatField()
     active = models.BooleanField(default=True)
+    registered_by = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
 
     class Meta:
         ordering = ('unit',)
@@ -95,6 +200,7 @@ class Checked_out_Tenant(models.Model):
     name = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     checked_out_date = models.DateField(("Date"), default=date.today)
     unit_stayed = models.CharField(max_length=200)
+    checked_by = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
 
     def __str__(self):
 
@@ -125,6 +231,7 @@ class Rent(models.Model):
 
     year = models.IntegerField(choices=YEAR_CHOICES,
            default=datetime.datetime.now().year)
+    recorded_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
     class Meta:
          unique_together = [("unit", "year","month")]
@@ -176,6 +283,7 @@ class Expense(models.Model):
     Description = models.TextField(max_length=300)
     Amount = models.FloatField()
     Date = models.DateField(("Date"), default=date.today)
+    recorded_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __str__(self):
         return '{}'.format(self.Amount)
@@ -203,3 +311,31 @@ class Allocated_message(models.Model):
 class IbgaroMessageCounter(models.Model):
     name = models.CharField(max_length=200, null=True)
     total_messages_sent = models.PositiveIntegerField()
+
+
+class Damage(models.Model):
+    tenant = models.ForeignKey(Tenant,on_delete=models.CASCADE,related_name='damages')
+    description = models.CharField(max_length = 200)
+    total_cost = models.FloatField()
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    paid = models.BooleanField(default=False)
+    recorded_by = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('-date',)
+        get_latest_by = ('date')
+
+
+    def __str__(self):
+        return f'Ksh. {self.total_cost}'
+
+
+class ChekedOutTenant(models.Model):
+    """to store chaked out tenants"""
+    name = models.CharField(max_length = 200)
+    checked_by = models.CharField(max_length = 200)
+    unit = models.CharField(max_length=200)
+    date = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name

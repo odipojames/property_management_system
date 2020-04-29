@@ -79,14 +79,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <img alt="" src="img/avatar1_small.jpg">
-                        <span class="username"> Welcome {{ user.username }}</span>
+                        <span class="username"> Welcome {{ user.full_name }}</span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">
                         <div class="log-arrow-up"></div>
 
-
-                        <li><a href="{% url 'property:signup' %}"><i class="fa fa-key"></i>Register New Admin</a></li>
+                         {% if user.is_superuser %}
+                        <li><a href="{% url 'property:signup' %}"><i class="fa fa-key"></i>Register New User</a></li>
+                          {% endif %}
                         <li><a href="{% url 'account_logout' %}"><i class="fa fa-key"></i> Log Out</a></li>
                     </ul>
                 </li>
@@ -100,7 +101,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <aside>
         <div id="sidebar" class="nav-collapse">
             <!-- sidebar menu start-->
-            <ul class="sidebar-menu" id="nav-accordion">
+            <ul class="sidebar-menu" id="nav-accordion" style=" width: 200px;
+    position: absolute;
+    overflow: scroll;
+    top: 0px;
+    height: 90%;
+    padding-top: 10px;">
                 <li>
                     <a class="active" href="{% url 'property:home' %}">
                         <i class="fa fa-dashboard"></i>
@@ -115,8 +121,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                     <ul class="sub">
                         <li><a href="#tab-add-property" role="tab"    data-toggle="tab">Add Property</a></li>
-                        <li><a href="#tab-display-property" role="tab"  data-toggle="tab">List Properties</a></li>
+                        <li><a href="#tab-display-property" role="tab"  data-toggle="tab">List Properties</a>
+                        {% if user.is_superuser %}
+                        </li>
                         <li><a href="{% url 'property:summary_report' %}">   Report summary</a></li>
+                        {% endif %}
                     </ul>
                 </li>
                 <li class="sub-menu">
@@ -154,14 +163,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-users"></i>
-                        <span class="dash-color">Transferred Tenants</span>
+                        <span class="dash-color">Tenants transfer</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="#tab-display-property-transfer" role="tab" data-toggle="tab"> Transfer Tenant</a></li>
-                        <li><a href="#tab-display-transfer" role="tab" data-toggle="tab">List Transferred Tenants</a>
+                        <li><a href="#tab-display-property-transfer" role="tab" data-toggle="tab">Transfer Tenant</a></li>
+                        <li><a href="#tab-display-transfer" role="tab" data-toggle="tab">Transferred Tenants</a>
                         </li>
                     </ul>
                 </li>
+
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class=" fa fa-users"></i>
@@ -169,9 +179,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                     <ul class="sub">
                         <li><a href="#tab-display-property-checkout" role="tab" data-toggle="tab"> Checkout a tenant</a></li>
-                        <!-- <li><a href="#tab-display-checkout" role="tab" data-toggle="tab">List Checkedout Tenants</a></li> -->
+                        <li><a href="#tab-display-checkedout" role="tab" data-toggle="tab"> Checked out list</a></li>
                     </ul>
                 </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class=" fa fa-users"></i>
+                        <i class="fas fa-hammer"></i>
+                        <span class="dash-color">Damages</span>
+                    </a>
+                    <ul class="sub">
+                          <li><a href="#tab-add-damage" role="tab" data-toggle="tab">Add Damages</a></li>
+                        <li><a href="#tab-display-damages" role="tab" data-toggle="tab">tenants with damages</a></li>
+                    </ul>
+                </li>
+
+
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class=" fa fa-money"></i>
@@ -213,8 +237,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </section>
     </section>
 </section>
-
-
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css"
@@ -543,6 +565,53 @@ $(document).ready(function() {
     } );
 } );
 </script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#home').append('<caption style="caption-side: bottom">Ibgaro Realtors Ltd company.</caption>');
+    $('#home').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+
+            {
+                extend: 'copyHtml5',
+                className: 'btn-primary',
+                title:'units',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn-primary',
+                title:'units',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                className: 'btn-primary',
+                title:'units',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn-primary',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ]
+    } );
+} );
+</script>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
     $('#rent').DataTable( {

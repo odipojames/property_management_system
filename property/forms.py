@@ -1,7 +1,6 @@
 from django import forms
-from .models import Property, Landlord, Tenant, Transfered_Tenant, Checked_out_Tenant, Rent, Expense, Unit, Messages
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import Property, Landlord, Tenant, Transfered_Tenant, Checked_out_Tenant, Rent, Expense, Unit, Messages,User, Damage
+# from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.dates import MONTHS
 from django.core.validators import RegexValidator
@@ -11,7 +10,7 @@ from num2words import num2words
 from django.core.validators import ValidationError
 from django.core.exceptions import NON_FIELD_ERRORS
 import calendar
-from bootstrap_modal_forms.forms import BSModalForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class PropertyForm(forms.ModelForm):
     class Meta:
@@ -106,4 +105,21 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username' ,'email', 'password1','password2' )
+        fields = ('full_name' ,'email','phone' ,'password1','password2' )
+
+
+
+class UserUpdateForm(UserChangeForm):
+    email = forms.CharField(max_length=150, help_text='Email')
+
+    class Meta:
+        model = User
+        fields = ('full_name' ,'email' )
+
+
+class DamageForm(forms.ModelForm):
+    date = forms.DateField(input_formats=["%d-%m-%Y"])
+
+    class Meta:
+        model = Damage
+        exclude = ('id', 'recorded_by')

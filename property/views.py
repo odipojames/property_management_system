@@ -22,6 +22,7 @@ from django.core.validators import ValidationError
 from django.db import IntegrityError
 
 from django.db.models import Sum, Count,Min
+import datetime
 
 
 
@@ -56,7 +57,8 @@ def home(request):
     expenses_count = expenses.count()
     allocated_message = Allocated_message.objects.get(name='admin')
     rem = allocated_message.count
-    print(rem)
+    damages = Damage.objects.all()
+    tenants_out = ChekedOutTenant.objects.all()
     property_form = None
     expense_form = None
     unit_form = None
@@ -66,6 +68,7 @@ def home(request):
     transfer_form = None
     rent_form = None
     message_form = None
+    damage_form = None
     # add property form
     if request.method == 'POST':
         if 'property_button' in request.POST:
@@ -105,6 +108,25 @@ def home(request):
                 messages.error(request, "Error adding unit")
     else:
         unit_form = UnitForm()
+
+    #damages
+    if request.method == 'POST':
+        if 'damage_button' in request.POST:
+            user = request.user
+            damage_form = DamageForm(request.POST)
+            if damage_form.is_valid():
+                damage = damage_form.save(commit=False)
+                damage.recorded_by = user
+                damage.save()
+                messages.success(request,"damage registered successfully")
+                return redirect("property:home")
+            else:
+                messages.error(request,"Error adding damage")
+                damage_form = DamageForm(request.POST)
+                return render(request,'property/home.html',{"damage_form":damage_form})
+
+    else:
+        damage_form = DamageForm()
 
     # add LandLord form
     if request.method == 'POST':
@@ -289,7 +311,9 @@ def home(request):
                 tenant = rent_form.cleaned_data['unit']
                 db_tenant = Tenant.objects.get(unit=tenant)
                 phone = db_tenant.Phone
-                rent_form.save()
+                rent = rent_form.save(commit=False)
+                rent.recorded_by = request.user
+                rent.save()
                 sms = africastalking.SMS
                 message = 'Thank you for paying your rent\n  Regards Ibgaro Realtors'
                 cost = 0
@@ -331,7 +355,9 @@ def home(request):
         if 'expense_button' in request.POST:
             expense_form = ExpenseForm(data=request.POST)
             if expense_form.is_valid():
-                expense_form.save()
+                expense=expense_form.save(commit=False)
+                expense.recorded_by = request.user
+                expense.save()
                 messages.success(request, "Expense added successfully")
                 return redirect('property:home')
             else:
@@ -446,12 +472,14 @@ def home(request):
                                                   'checkout_form': checkout_form,
                                                   'transfer_form': transfer_form,
                                                   'landlord_form': landlord_form,
+                                                  "damage_form":damage_form,
                                                   'properties': properties,
                                                   'landlords': landlords,
                                                   'tenants': tenants,
                                                   'units': units,
                                                   'expenses': expenses,
                                                   'checked_out_tenants': checked_out_tenants,
+                                                  "tenants_out":tenants_out,
                                                   'transferred_tenants': transferred_tenants,
                                                   'rents': rents,
                                                   'properties_count': properties_count,
@@ -465,6 +493,7 @@ def home(request):
                                                   'message_form': message_form,
                                                   'messages_count': messages_count,
                                                   'rem': rem
+
                                                   })
 
 
@@ -571,6 +600,16 @@ def edit_rent(request, id):
     return render(request, 'property/edit_rent.html', {'rent_form': rent_form})
 
 
+
+
+
+
+
+
+
+
+
+
 def edit_expense(request, id):
     single_expense = Expense.objects.get(id=id)
     if request.method == 'POST':
@@ -585,12 +624,31 @@ def edit_expense(request, id):
     return render(request, 'property/edit_expense.html', {'expense_form': expense_form})
 
 
+def edit_damage(request, id):
+    damage = Damage.objects.get(id=id)
+    if request.method == 'POST':
+        damage_form = DamageForm(data=request.POST, instance=damage)
+        if damage_form.is_valid():
+            damage_form.save()
+            messages.success(request, "Damage updated successfully")
+        else:
+            messages.error(request, "Error updating Damage")
+    else:
+        damage_form = DamageForm(instance=damage)
+    return render(request, 'property/edit_damage.html', {'damage_form': damage_form})
+
+
 def delete_property(request, id):
     single_property = Property.objects.get(id=id)
     single_property.delete()
     messages.success(request, "Property deleted successfully")
     return redirect('property:home')
 
+def delete_damage(request, id):
+    damage = Damage.objects.get(id=id)
+    damage.delete()
+    messages.success(request, "Damages deleted successfully")
+    return redirect('property:home')
 
 def delete_landlord(request, id):
     single_landlord = Landlord.objects.get(id=id)
@@ -610,10 +668,17 @@ def delete_tenant(request, id):
 
 
 def delete_unit(request, id):
+    user = request.user
     single_unit = Unit.objects.get(id=id)
-    single_unit.delete()
-    messages.success(request, "Unit deleted successfully")
-    return redirect('property:home')
+    if user.is_superuser:
+        single_unit.delete()
+        messages.success(request, "Unit deleted successfully")
+        return redirect('property:home')
+
+    if user.is_superuser == False:
+        messages.error(request, "you dont have permision to perfom this")
+        return redirect('property:home')
+
 
 
 def delete_checkout(request, id):
@@ -642,6 +707,13 @@ def delete_expense(request, id):
     single_expense.delete()
     messages.success(request, "Expense deleted successfully")
     return redirect('property:home')
+
+def delete_checked_tenant(request,id):
+    single_ten = ChekedOutTenant.objects.get(id=id)
+    single_ten.delete()
+    messages.success(request, "checked out tenant deleted successfully")
+    return redirect('property:home')
+
 
 
 class PropertyDetail(generic.DetailView):
@@ -683,6 +755,12 @@ def rent_detail(request,id):## TODO:
     unit = Unit.objects.get(id=id)
     rents = Rent.objects.filter(unit=unit)
     return render(request,'property/unit_rent_report.html',{"rents":rents,"unit":unit})
+
+
+def single_tenant_damages(request,id):
+    """display damages recorded against single tenant"""
+    tenant = Tenant.objects.get(id=id)
+    return render(request,'property/tenant_damages.html',{'tenant':tenant})
 
 
 
@@ -735,6 +813,7 @@ def add_rent(request, id):
                 if rent > monthly_rent:
                     credit = rent - monthly_rent
                 new_rent_form.unit = unit
+                new_rent_form.recorded_by = request.user
                 try:#using try chatch to find out if rent for that partcular period is allready recorded
                     Rent.objects.get(year=year,month=month,unit=unit )
                 except Rent.DoesNotExist:
@@ -875,6 +954,7 @@ def add_tenant(request, id):
                 unit.occupied = True
                 unit.save()
                 new_tenant_form.unit = unit
+                new_tenant_form.registered_by = request.user
                 new_tenant_form.save()
                 if phone != None:
                     sms = africastalking.SMS
@@ -1055,6 +1135,8 @@ def detailed_property_transfer(request, id):
 def add_checkout(request, id):
     checkout_form = None
     unit = Unit.objects.get(id=id)
+    date_data = datetime.datetime.now()
+    date = date_data.strftime("%d,%B,%Y")
     if request.method == 'POST':
         if 'checkout_button' in request.POST:
             checkout_form = CheckedOutTenantForm(data=request.POST)
@@ -1063,6 +1145,8 @@ def add_checkout(request, id):
                 tenant = tenant.name
                 db_tenant = Tenant.objects.get(name=tenant)
                 unit = db_tenant.unit
+                ten=ChekedOutTenant.objects.create(name=tenant,checked_by=request.user,unit=unit,date=date)
+                print(ten)
                 try:
                     landlord = Landlord.objects.get(unit=unit)
                 except Landlord.DoesNotExist:
@@ -1073,12 +1157,14 @@ def add_checkout(request, id):
                     new_check = checkout_form.save(commit=False)
                     new_check.unit_stayed = db_tenant.unit
                     new_check.name = db_tenant
+                    new_check.checked_by = request.user
                     # db_tenant.unit.occupied = False
                     # db_tenant.unit.save()
                     new_unit = Unit.objects.create(
                         property=unit.property, floor_number=unit.floor_number, monthly_rent=unit.monthly_rent, unit_number=unit.unit_number)
                     Landlord.objects.create(
                         name=landlord.name, ID_or_Passport=landlord.ID_or_Passport, Phone=landlord.Phone, unit=new_unit)
+                    ##capturinng the Checked_out_Tenant
                     new_check.save()
                     db_tenant.unit.delete()
                     sms = africastalking.SMS
@@ -1148,6 +1234,11 @@ def property_financial_statement(request, id):
     qs = Rent.objects.filter(unit__property=property)
     report = qs.values('year','month').order_by('-year','month').annotate(Sum('rent'),Sum('service_charge'),Sum('total_amount_paid'),Sum('Balance'),Count('pk'))
     return render(request, 'property/financial_statement.html', {'report': report,'property':property})
+
+
+
+
+
 
 
 def property_financial_summary(request):

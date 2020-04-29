@@ -18,6 +18,8 @@ urlpatterns = [
     re_path(r'^delete/checked/out/tenant/(?P<id>\d+)/', views.delete_checkout, name='checkout'),
     re_path(r'^delete/rent/(?P<id>\d+)/', views.delete_rent, name='rent'),
     re_path(r'^delete/expense/(?P<id>\d+)/', views.delete_expense, name='expense'),
+    path('delete/damage/<int:id>',views.delete_damage,name='delete_damage'),
+    path('delete/checked_tenants/<int:id>',views.delete_checked_tenant,name='delete_cheked'),
     re_path(r'^edit/expense/(?P<id>\d+)/', views.edit_expense, name='edit_expense'),
     re_path(r'^edit/property/(?P<id>\d+)/', views.edit_property, name='edit_property'),
     re_path(r'^edit/landlord/(?P<id>\d+)/', views.edit_landlord, name='edit_landlord'),
@@ -26,6 +28,7 @@ urlpatterns = [
     re_path(r'^edit/transfer/tenant/(?P<id>\d+)/', views.edit_transfer, name='edit_transfer'),
     re_path(r'^edit/checkout/(?P<id>\d+)/', views.edit_checkout, name='edit_checkout'),
     re_path(r'^edit/rent/(?P<id>\d+)/', views.edit_rent, name='edit_rent'),
+    path('edit/damage/<int:id>',views.edit_damage,name='edit_damage'),
     path('property/<int:pk>/', views.PropertyDetail.as_view(), name='property_detail'),
     path('unit/<int:pk>/', views.UnitDetail.as_view(), name='unit_detail'),
     path('landlord/<int:pk>/', views.LandlordDetail.as_view(), name='landlord_detail'),
@@ -49,5 +52,8 @@ urlpatterns = [
     path('unit/rent/<int:id>',views.rent_detail,name='single_unit_rent'),
     path('fin/statement/<int:id>',views.property_financial_statement,name='statement'),
     path('fin/statement/',views.property_financial_summary,name='summary_report'),
+    path('dmages/<int:id>',views.single_tenant_damages,name='single-tenant-damages'),
+
+
 
 ]

@@ -1,68 +1,64 @@
-{% extends 'property/base_report.html' %}
+{% extends 'property/base.html' %}
 {% load humanize %}
 {% block title %}Report{% endblock %}
 {% block body %}
 {% load bootstrap4 %}
 <!-- single tenant rent display -->
-<div class="tab-pane" id="tab-display-rent">
+<div class="tab-pane" id="tab-display-dam">
 <!-- page start-->
 <section class="panel">
   <header class="panel-heading">
-  {{unit.unit_tenant.name}}  unit  {{unit.unit_number}} of  {{unit.property}}
+  {{tenant.name}}    {{tenant.unit}}
   </header>
-  <table class="table table-hover p-table  responsive" width="100%" id="unit-rent">
+  <table class="table table-hover p-table  responsive" width="100%" id="tenant-damages">
     <thead>
       <tr>
-        <th>rent</th>
-        <th>Service fee</th>
-        <th>total amount paid</th>
-        <th>Balance</th>
-        <th>Served By</th>
-        <th>Month</th>
-        <th>Year</th>
+        <th>Total cost</th>
+        <th>Description</th>
+        <th>Date recorded</th>
+        <th>Recorded by</th>
+        <th>Paid</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th>rent</th>
-        <th>Service fee</th>
-        <th>total amount paid</th>
-        <th>Balance</th>
-        <th>Served By</th>
-        <th>Month</th>
-        <th>Year</th>
+        <th>Total cost</th>
+        <th>Description</th>
+        <th>Date recorded</th>
+        <th>Recorded by</th>
+        <th>Paid</th>
         <th>Actions</th>
       </tr>
     </tfoot>
     <tbody>
-      {% for rent in rents %}
+      {% for damage in tenant.damages.all %}
       <tr>
-       <td class="p-name">
-          {{rent.rent | stringformat:'d' | intcomma}}
+
+        <td class="p-name">
+          {{damage.total_cost | stringformat:'d' | intcomma}}
         </td>
         <td class="p-name">
-          {{rent.service_charge | stringformat:'d' | intcomma}}
+          {{damage.description}}
         </td>
         <td class="p-name">
-           {{rent.total_amount_paid | stringformat:'d' | intcomma}}
-         </td>
-        <td class="p-name">
-          {{rent.Balance | stringformat:'d' | intcomma}}
+          {{damage.date}}
         </td>
         <td class="p-name">
-          <a href="#">{{rent.recorded_by.full_name}}</a>
+          {{damage.recorded_by.full_name}}
         </td>
+        {% if damage.paid %}
         <td class="p-name">
-          <a href="#">{{rent.get_month_display}}</a>
+          <a href="#">Yes</a>
         </td>
+        {% else %}
         <td class="p-name">
-          <a href="#">{{rent.year}}</a>
+          <a href="#">No</a>
         </td>
+        {% endif %}
+        {% if user.is_superuser %}
         <td>
-          <a href="{% url 'property:rent_detail' rent.pk %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View
-          </a>
-          <a href="{% url 'property:edit_rent' rent.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+          <a href="{% url 'property:edit_damage' damage.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
           <a role="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalConfir"><i class="fa fa-trash-o"></i> Delete </a>
 
           <!--Modal: modalConfirmDelete-->
@@ -78,7 +74,7 @@
 
                 <!--Footer-->
                 <div class="modal-footer flex-center" style="text-align:center">
-                  <a href="{% url 'property:rent' rent.id %}" class="btn  btn-success">Yes</a>
+                  <a href="{% url 'property:delete_damage' damage.id %}" class="btn  btn-success">Yes</a>
                   <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
                 </div>
               </div>
@@ -87,6 +83,11 @@
           </div>
           <!--Modal: modalConfirmDelete-->
         </td>
+        {% else %}
+        <td>
+          XXXXX
+        </td>
+        {% endif %}
         {% empty %}
         <td class="p-name">
           <a>You haven't added any rents yet</a>
@@ -103,7 +104,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#unit-rent').DataTable( {
+    $('#tenant-damages').DataTable( {
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
 
@@ -138,7 +139,7 @@ $(document).ready(function() {
 
             // Total over all pages
             total2 = api
-                .column( 1,)
+                .column( 0,)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -146,63 +147,16 @@ $(document).ready(function() {
 
             // Total over this page
             pageTotal2 = api
-                .column( 1, { page: 'current'} )
+                .column( 0, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
             // Update footer
-            $( api.column( 1).footer() ).html(
+            $( api.column( 0).footer() ).html(
                 'Ksh.'+pageTotal2 +' ( Ksh.'+ total2 +' total)'
             );
-
-            // Total over all pages
-            total3 = api
-                .column( 2,)
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-            // Total over this page
-            pageTotal3 = api
-                .column( 2, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-            // Update footer
-            $( api.column( 2 ).footer() ).html(
-                'Ksh.'+pageTotal3 +' ( Ksh.'+ total3 +' total)'
-            );
-
-
-            // Total over all pages
-            total4 = api
-                .column( 3,)
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-            // Total over this page
-            pageTotal4 = api
-                .column( 3, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-            // Update footer
-            $( api.column( 3 ).footer() ).html(
-                'Ksh.'+pageTotal4 +' ( Ksh.'+ total4 +' total)'
-            );
-
-
-
-
 
         },
 

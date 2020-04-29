@@ -1,0 +1,47 @@
+{% extends 'property/base.html' %}
+
+{% block title %}Edit Rent {% endblock %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+{% if messages %}
+{% for message in messages %}
+{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<div class="alert alert-danger">
+    <strong>{{ message|escape }}</strong>
+</div>
+{% else %}
+<div class="alert alert-success">
+    <strong>{{ message|escape }}</strong>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<!--Add landlord start -->
+<div class="tab-pane" id="tab-add-landlord">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2>Edit Damage</h2><br>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-10" style="margin:10px">
+                    <form class="form-horizontal tabular-form" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                        {{damage_form|crispy}}
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-sm-8 col-sm-10">
+                                    <input name="rent_button" type="submit" class="btn-primary btn"
+                                           value="Save">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
