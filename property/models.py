@@ -317,7 +317,7 @@ class Damage(models.Model):
     tenant = models.ForeignKey(Tenant,on_delete=models.CASCADE,related_name='damages')
     description = models.CharField(max_length = 200)
     total_cost = models.FloatField()
-    date = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
     paid = models.BooleanField(default=False)
     recorded_by = models.ForeignKey(User,on_delete=models.CASCADE)
 

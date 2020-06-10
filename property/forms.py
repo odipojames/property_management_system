@@ -118,8 +118,7 @@ class UserUpdateForm(UserChangeForm):
 
 
 class DamageForm(forms.ModelForm):
-    date = forms.DateField(input_formats=["%d-%m-%Y"])
 
     class Meta:
         model = Damage
-        exclude = ('id', 'recorded_by')
+        exclude = ('id', 'recorded_by','date')

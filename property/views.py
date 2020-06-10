@@ -826,7 +826,7 @@ def add_rent(request, id):
                 new_rent_form.save()
                 sms = africastalking.SMS
                 if rent <= monthly_rent:
-                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\nBalance ksh.{}\n  Regards Ibgaro Realtors.'.format(
+                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\nBalance ksh.{}\n  Regards Softsearch Realtors.'.format(
                         name, rent, month, year, balance)
                     cost = 0
                     m = len(message)
@@ -858,7 +858,7 @@ def add_rent(request, id):
                             request, "You dont have sufficent credit to send messages please recharge")
                     return redirect('property:home')
                 if rent > monthly_rent:
-                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\ncredit carried forward ksh.{}\n  Regards Ibgaro Realtors.'.format(
+                    message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\ncredit carried forward ksh.{}\n  SoftsearchLimited Realtors.'.format(
                         name, rent, month, year, credit)
                     cost = 0
                     m = len(message)
@@ -958,7 +958,7 @@ def add_tenant(request, id):
                 new_tenant_form.save()
                 if phone != None:
                     sms = africastalking.SMS
-                    message = 'Dear {},You have a new tenant in your house number {},\n Regards Ibgaro Realtors.'.format(
+                    message = 'Dear {},You have a new tenant in your house number {},\n SoftsearchLimited Realtors.'.format(
                         name, unit)
                     cost = 0
                     m = len(message)
@@ -1040,7 +1040,7 @@ def add_transferred_tenant(request, id):
                 cheker1 = False
                 if phone != None:  # send text to privious LandLord
                     sms = africastalking.SMS
-                    message = 'Dear {},tenant has been transferred out of your unit number {}\n Regards Ibgaro Realtors.'.format(
+                    message = 'Dear {},tenant has been transferred out of your unit number {}\n Regards SoftsearchLimited.'.format(
                         name, unit)
                     cost = 0
                     m = len(message)
@@ -1080,7 +1080,7 @@ def add_transferred_tenant(request, id):
                 cheker2 = False
                 if phone1 != None:  # send text to new LandLord
                     sms = africastalking.SMS
-                    message = 'Dear {},tenant has been transferred into your unit number {}\n Regards Ibgaro Realtors.'.format(
+                    message = 'Dear {},tenant has been transferred into your unit number {}\n Regards SoftsearchLimited.'.format(
                         name1, new_unit)
                     cost = 0
                     m = len(message)
@@ -1168,7 +1168,7 @@ def add_checkout(request, id):
                     new_check.save()
                     db_tenant.unit.delete()
                     sms = africastalking.SMS
-                    message = 'Dear {} tenant has moved out your house number {}\n Regards Ibgaro Realtors.'.format(
+                    message = 'Dear {} tenant has moved out your house number {}\n Regards SoftsearchLimited.'.format(
                         name, unit)
                     cost = 0
                     m = len(message)
