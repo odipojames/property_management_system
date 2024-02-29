@@ -23,15 +23,13 @@ from django.db import IntegrityError
 
 from django.db.models import Sum, Count,Min
 import datetime
+from utils.helpers import send_sms
 
 
 
 
 
-# Initialize SDK
-username = USERNAME
-api_key = APIKEY
-africastalking.initialize(username, api_key)
+
 
 
 @login_required(login_url='/accounts/login/')
@@ -164,7 +162,7 @@ def home(request):
                 db_unit.save()
                 tenant_form.save()
                 if phone != None:
-                    sms = africastalking.SMS
+                    # sms = africastalking.SMS
                     message = 'You have a new tenant in your house number {}'.format(
                         selected_unit)
                     cost = 0
@@ -189,7 +187,7 @@ def home(request):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -251,7 +249,7 @@ def home(request):
                     db_tenant.active = False
                     db_tenant.save()
                     new_check.save()
-                    sms = africastalking.SMS
+                    # sms = africastalking.SMS
                     message = ' tenant in has moved out your house number {}'.format(
                         unit)
                     cost = 0
@@ -277,7 +275,7 @@ def home(request):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -314,7 +312,7 @@ def home(request):
                 rent = rent_form.save(commit=False)
                 rent.recorded_by = request.user
                 rent.save()
-                sms = africastalking.SMS
+                #sms = africastalking.SMS
                 message = 'Thank you for paying your rent\n  Regards Ibgaro Realtors'
                 cost = 0
                 m = len(message)
@@ -336,7 +334,7 @@ def home(request):
                     message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                     message_counter.save()
                     sender = 'softsearch'
-                    response = sms.send(message, [phone], sender)
+                    response = send_sms(message, [phone])
                     counter = counter - cost
                     message_allocated.count = counter
                     message_allocated.save()
@@ -374,7 +372,7 @@ def home(request):
                 send_to_all = str(send_to_all)
                 if send_to_all == 'True':
                     tenant = Tenant.objects.filter(active=True)
-                    sms = africastalking.SMS
+                    #sms = africastalking.SMS
                     message_allocated = Allocated_message.objects.get(
                         name='admin')
                     counter = message_allocated.count
@@ -394,7 +392,7 @@ def home(request):
                             mes_count = 5
                         if mes_count < counter:
                             phone_number = ten.Phone
-                            sms.send(message, [phone_number], 'softsearch')
+                            send_sms(message, [phone_number])
                             counter = counter - mes_count
                             message_allocated.count = counter
                             message_allocated.save()
@@ -415,7 +413,7 @@ def home(request):
                     tenant = message_form.cleaned_data['tenant']
                     print(tenant)
                     if tenant is not None:
-                        sms = africastalking.SMS
+                        #sms = africastalking.SMS
                         message_allocated = Allocated_message.objects.get(
                             name='admin')
                         counter = message_allocated.count
@@ -435,7 +433,7 @@ def home(request):
                                 mes_count = 5
                             if mes_count < counter:
                                 phone_number = ten.Phone
-                                sms.send(message, [phone_number], 'softsearch')
+                                send_sms(message, [phone_number])
                                 counter = counter - mes_count
                                 message_allocated.count = counter
                                 message_allocated.save()
@@ -824,7 +822,7 @@ def add_rent(request, id):
                     return redirect('property/add_rent.html', {'rent_form': rent_form})
 
                 new_rent_form.save()
-                sms = africastalking.SMS
+                #sms = africastalking.SMS
                 if rent <= monthly_rent:
                     message = 'Dear {}, we thank you for paying your rent Ksh.{} for month of {}/{},\nBalance ksh.{}\n  Regards Softsearch Realtors.'.format(
                         name, rent, month, year, balance)
@@ -848,7 +846,7 @@ def add_rent(request, id):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -880,7 +878,7 @@ def add_rent(request, id):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -957,7 +955,7 @@ def add_tenant(request, id):
                 new_tenant_form.registered_by = request.user
                 new_tenant_form.save()
                 if phone != None:
-                    sms = africastalking.SMS
+                    #sms = africastalking.SMS
                     message = 'Dear {},You have a new tenant in your house number {},\n SoftsearchLimited Realtors.'.format(
                         name, unit)
                     cost = 0
@@ -982,7 +980,7 @@ def add_tenant(request, id):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -1039,7 +1037,7 @@ def add_transferred_tenant(request, id):
                 new_transfer_form.save()
                 cheker1 = False
                 if phone != None:  # send text to privious LandLord
-                    sms = africastalking.SMS
+                    #sms = africastalking.SMS
                     message = 'Dear {},tenant has been transferred out of your unit number {}\n Regards SoftsearchLimited.'.format(
                         name, unit)
                     cost = 0
@@ -1064,7 +1062,7 @@ def add_transferred_tenant(request, id):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -1079,7 +1077,7 @@ def add_transferred_tenant(request, id):
                         request, "Tenant transferred successfully")
                 cheker2 = False
                 if phone1 != None:  # send text to new LandLord
-                    sms = africastalking.SMS
+                    #sms = africastalking.SMS
                     message = 'Dear {},tenant has been transferred into your unit number {}\n Regards SoftsearchLimited.'.format(
                         name1, new_unit)
                     cost = 0
@@ -1104,7 +1102,7 @@ def add_transferred_tenant(request, id):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()
@@ -1167,7 +1165,7 @@ def add_checkout(request, id):
                     ##capturinng the Checked_out_Tenant
                     new_check.save()
                     db_tenant.unit.delete()
-                    sms = africastalking.SMS
+                    #sms = africastalking.SMS
                     message = 'Dear {} tenant has moved out your house number {}\n Regards SoftsearchLimited.'.format(
                         name, unit)
                     cost = 0
@@ -1193,7 +1191,7 @@ def add_checkout(request, id):
                         message_counter.total_messages_sent = message_counter.total_messages_sent + 1
                         message_counter.save()
                         sender = 'softsearch'
-                        response = sms.send(message, [phone], sender)
+                        response = send_sms(message, [phone])
                         counter = counter - cost
                         message_allocated.count = counter
                         message_allocated.save()

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from decouple import config
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -29,7 +31,7 @@ DEBUG = True
 # APIKEY = config('APIKEY')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'property',
+    'utils',
     'crispy_forms',
     'allauth',
     'django.contrib.humanize',
@@ -52,7 +55,7 @@ INSTALLED_APPS = [
     'smart_selects',
     'django_celery_beat',
     'django_extensions',
-    'bootstrap_modal_forms',
+    
 
 ]
 
@@ -105,13 +108,16 @@ WSGI_APPLICATION = 'property_management.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+MODE=config("MODE", default="dev")
+if MODE=="prod":
+    DATABASES = {"default": dj_database_url.config(default=config("DATABASE_URL"))}
+else:#local db
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
 
 
 # Password validation
@@ -191,3 +197,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
+
+# sms keys
+username = config("username")
+api_key = config("api_key")
+
+
