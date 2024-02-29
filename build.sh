@@ -1,11 +1,12 @@
 #!/bin/bash
-echo "Create migrations"
-python manage.py makemigrations 
-echo "=================================="
 
-echo "Migrate"
-python manage.py migrate
-echo "=================================="
+# Build the project
+echo "Building the project..."
+python3 -m pip install -r requirements.txt
 
-echo "Start server"
-python manage.py runserver 0.0.0.0:8000
+echo "Make Migration..."
+python3 manage.py makemigrations --noinput
+python3 manage.py migrate --noinput
+
+echo "Collect Static..."
+python3 manage.py collectstatic --noinput --clear
